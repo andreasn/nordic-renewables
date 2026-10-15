@@ -175,19 +175,19 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
     <div class="nx-card"><h3 id="gen-solar-title">Solar generation</h3><p class="nx-note">Solar PV, stacked by country, TWh per year</p>
       <div class="nx-chart" id="gen-solar" data-source="generation gen_annual gen_estimate_totals"></div></div>
   </div>
-  <div class="nx-card" id="gen-ann-card" style="margin-bottom: var(--cds-gap-md)"><h3>Estimated generation by year</h3><p class="nx-note">TWh · end-of-year capacity times the country's 2022–24 capacity factor; a run-rate for the capacity in place, before weather swings and curtailment</p>
+  <details class="nx-card nx-collapse" id="gen-ann-card" style="margin-bottom: var(--cds-gap-md)"><summary><h3>Estimated generation by year</h3><span class="nx-toggle-hint">Show table</span></summary><p class="nx-note">TWh · end-of-year capacity times the country's 2022–24 capacity factor; a run-rate for the capacity in place, before weather swings and curtailment</p>
     <div class="nx-tablebox"><table class="nx-table nx-plain" id="gen-ann-table" data-source="gen_annual" data-row-key="country,tech,year">
       <thead><tr><th>Country</th><th>Technology</th><th>2025</th><th>2026</th><th>2027</th><th>2028</th><th>2029</th><th>2030</th></tr></thead>
-      <tbody></tbody></table></div></div>
-  <div class="nx-card" id="est-card" style="margin-bottom: var(--cds-gap-md)"><h3>2030 generation estimate by country</h3><p class="nx-note">Capacity factor is the 2022–24 average; range uses the weakest and strongest of those years. Likely conservative for wind (newer turbines and offshore run higher) and excludes curtailment.</p>
+      <tbody></tbody></table></div></details>
+  <details class="nx-card nx-collapse" id="est-card" style="margin-bottom: var(--cds-gap-md)"><summary><h3>2030 generation estimate by country</h3><span class="nx-toggle-hint">Show table</span></summary><p class="nx-note">Capacity factor is the 2022–24 average; range uses the weakest and strongest of those years. Likely conservative for wind (newer turbines and offshore run higher) and excludes curtailment.</p>
     <div class="nx-tablebox"><table class="nx-table nx-plain" id="est-table" data-source="gen_estimate" data-row-key="country,tech">
       <thead><tr><th data-field="country">Country</th><th data-field="tech">Technology</th><th data-field="capacity_factor">Capacity factor</th><th data-field="gen_2024_twh">2024 (TWh)</th><th data-field="est_2030_twh">2030 est. (TWh)</th><th data-field="low_twh">Range (TWh)</th></tr></thead>
-      <tbody></tbody></table></div></div>
-  <div class="nx-card" id="gen-table-card"><h3>Generation by country and year</h3><p class="nx-note">GWh · sort by any column, search by country or year</p>
+      <tbody></tbody></table></div></details>
+  <details class="nx-card nx-collapse" id="gen-table-card"><summary><h3>Generation by country and year</h3><span class="nx-toggle-hint">Show table</span></summary><p class="nx-note">GWh · sort by any column, search by country or year</p>
     <div class="nx-tools"><input type="search" placeholder="Search, e.g. Denmark or 2024" aria-label="Search generation table" id="gen-q"></div>
     <div class="nx-tablebox"><table class="nx-table" id="gen-table" data-source="generation" data-row-key="country,year">
       <thead><tr><th data-field="country"><button>Country</button></th><th data-field="year"><button>Year</button></th><th data-field="solar_gwh"><button>Solar (GWh)</button></th><th data-field="wind_gwh"><button>Wind (GWh)</button></th></tr></thead>
-      <tbody></tbody></table></div></div>
+      <tbody></tbody></table></div></details>
 
   <div class="nx-src" id="about">
     <p><b>Capacity:</b> IRENA, Renewable Energy Statistics 2026 (published July 2026), via Our World in Data's copy of the series; wind is onshore plus offshore, solar is total solar. Norway's solar series starts later than the others.</p>
@@ -451,10 +451,11 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
 
 <script>
 (function () {
-  const d = document.getElementById('cap-table-card');
-  const hint = d.querySelector('.nx-toggle-hint');
-  const sync = () => { hint.textContent = d.open ? 'Hide table' : 'Show table'; };
-  d.addEventListener('toggle', sync); sync();
+  document.querySelectorAll('#dash-root details.nx-collapse').forEach(d => {
+    const hint = d.querySelector('.nx-toggle-hint');
+    const sync = () => { hint.textContent = d.open ? 'Hide table' : 'Show table'; };
+    d.addEventListener('toggle', sync); sync();
+  });
 })();
 </script>
 
