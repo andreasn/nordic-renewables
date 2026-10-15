@@ -81,7 +81,7 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
 <div id="dash-root">
 <style>
 #dash-root .nx { font-family: var(--font-anthropic-sans); color: var(--color-fg); }
-#dash-root .nx-head h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0 0 var(--cds-gap-xs); }
+#dash-root .nx-head h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0 0 var(--cds-gap-lg); }
 #dash-root .nx-take { color: var(--color-fg-muted); font-size: var(--cds-font-size-body); margin: 0 0 var(--cds-gap-lg); max-width: 60rem; }
 #dash-root .nx-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr)); gap: var(--cds-gap-md); margin-bottom: var(--cds-gap-xl); }
 #dash-root .nx-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; }
@@ -124,14 +124,6 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
 <div class="nx">
   <header class="nx-head">
     <h1 id="title">Nordic solar &amp; wind</h1>
-    <p class="nx-take" id="takeaway">Across Denmark, Finland, Norway and Sweden, wind capacity reached
-      <b data-source="nordic_totals" data-field="value" data-where="metric=wind_capacity" class="dash-skeleton">—</b> GW and solar
-      <b data-source="nordic_totals" data-field="value" data-where="metric=solar_capacity" class="dash-skeleton">—</b> GW in
-      <span data-source="nordic_totals" data-field="year" data-where="metric=wind_capacity" class="dash-skeleton">—</span>. Solar is the faster grower:
-      <b data-source="nordic_totals" data-field="growth" data-where="metric=solar_capacity" class="dash-skeleton">—</b>× in ten years, against
-      <b data-source="nordic_totals" data-field="growth" data-where="metric=wind_capacity" class="dash-skeleton">—</b>× for wind. Industry outlooks point to about
-      <b data-source="outlook_totals" data-field="forecast_2030_gw" data-where="tech=wind" class="dash-skeleton">—</b> GW of wind and
-      <b data-source="outlook_totals" data-field="forecast_2030_gw" data-where="tech=solar" class="dash-skeleton">—</b> GW of solar by 2030.</p>
   </header>
 
   <div class="nx-tiles" id="tiles"></div>
