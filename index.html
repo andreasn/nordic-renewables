@@ -112,6 +112,14 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
 #dash-root .nx-table td { padding: var(--cds-pad-xs) var(--cds-pad-sm); text-align: right; border-bottom: 1px solid var(--color-border-line); }
 #dash-root .nx-table.nx-plain th { padding: var(--cds-pad-xs) var(--cds-pad-sm); color: var(--color-fg-muted); font-weight: 400; white-space: nowrap; }
 #dash-root .nx-table .nx-l { text-align: left; }
+#dash-root details.nx-collapse > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: var(--cds-gap-sm); }
+#dash-root details.nx-collapse > summary::-webkit-details-marker { display: none; }
+#dash-root details.nx-collapse > summary::before { content: ""; width: 0.5rem; height: 0.5rem; border-right: 1.5px solid var(--color-fg-muted); border-bottom: 1.5px solid var(--color-fg-muted); transform: rotate(-45deg); transition: transform var(--cds-dur-slow); flex: none; }
+#dash-root details.nx-collapse[open] > summary::before { transform: rotate(45deg); }
+#dash-root details.nx-collapse > summary h3 { flex: 1; }
+#dash-root details.nx-collapse > summary:focus-visible { outline: 2px solid var(--series-1); outline-offset: 4px; border-radius: 4px; }
+#dash-root .nx-toggle-hint { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+#dash-root details.nx-collapse > .nx-note { margin-top: var(--cds-gap-sm); }
 #dash-root .nx-table tr.nx-proj td { color: var(--color-fg-muted); font-style: italic; }
 #dash-root .nx-table td.nx-l { min-width: 14rem; color: var(--color-fg-muted); }
 #dash-root .nx-src { margin-top: var(--cds-gap-xl); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); max-width: 60rem; }
@@ -137,11 +145,11 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
     <div class="nx-card"><h3 id="cap-solar-title">Solar capacity</h3><p class="nx-note">Total solar, stacked by country, GW</p>
       <div class="nx-chart" id="cap-solar" data-source="capacity annual"></div></div>
   </div>
-  <div class="nx-card" id="cap-table-card"><h3>Capacity by country and year</h3><p class="nx-note">MW, end of year · 2000–2025 actual (IRENA), 2026–2030 forecast in lighter text: wind from WindEurope's expected yearly installations on IRENA's 2025 base, solar a straight line to the 2030 forecast · sort by any column, search by country, year or "forecast"</p>
+  <details class="nx-card nx-collapse" id="cap-table-card"><summary><h3>Capacity by country and year</h3><span class="nx-toggle-hint">Show table</span></summary><p class="nx-note">MW, end of year · 2000–2025 actual (IRENA), 2026–2030 forecast in lighter text: wind from WindEurope's expected yearly installations on IRENA's 2025 base, solar a straight line to the 2030 forecast · sort by any column, search by country, year or "forecast"</p>
     <div class="nx-tools"><input type="search" placeholder="Search, e.g. Sweden, 2028 or forecast" aria-label="Search capacity table" id="cap-q"></div>
     <div class="nx-tablebox"><table class="nx-table" id="cap-table" data-source="capacity annual" data-row-key="country,year">
       <thead><tr><th data-field="country"><button>Country</button></th><th data-field="year"><button>Year</button></th><th data-field="kind" class="nx-l"><button>Status</button></th><th data-field="solar_mw"><button>Solar (MW)</button></th><th data-field="wind_mw"><button>Wind (MW)</button></th></tr></thead>
-      <tbody></tbody></table></div></div>
+      <tbody></tbody></table></div></details>
 
   <h2 class="nx-sec" id="outlook">Industry outlook to 2030</h2>
   <p class="nx-secnote">Wind: WindEurope's outlook from February 2026, a current country-by-country forecast, applied as growth on top of IRENA's 2025 capacity so it lines up with the historical series. Solar: the most recent published industry figures available, from early 2024 (SolarPower Europe's newer country forecasts sit behind a sign-up), so treat them as older and less certain.</p>
@@ -438,6 +446,15 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
       tb.appendChild(tt);
     });
   });
+})();
+</script>
+
+<script>
+(function () {
+  const d = document.getElementById('cap-table-card');
+  const hint = d.querySelector('.nx-toggle-hint');
+  const sync = () => { hint.textContent = d.open ? 'Hide table' : 'Show table'; };
+  d.addEventListener('toggle', sync); sync();
 })();
 </script>
 
