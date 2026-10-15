@@ -5,7 +5,8 @@
   const DATASETS = {
     capacity: 'data/nordic_capacity_irena.csv',
     generation: 'data/nordic_generation_eurostat.csv',
-    forecast: 'data/nordic_outlook_2030.csv'
+    forecast: 'data/nordic_outlook_2030.csv',
+    annual: 'data/nordic_outlook_annual.csv'
   };
 
   const store = {};      // id -> {status, data, columns, message}

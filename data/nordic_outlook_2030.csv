@@ -1,8 +1,8 @@
 country,tech,forecast_2030_mw,source_base_2025_mw,source,published,note
-Denmark,wind,8870,7508,WindEurope - Wind energy in Europe: 2025 statistics and the outlook for 2026-2030,2026-02,Onshore 4860 + offshore 4010 MW cumulative by 2030; onshore roughly flat as old turbines retire
-Finland,wind,12000,9504,WindEurope - Wind energy in Europe: 2025 statistics and the outlook for 2026-2030,2026-02,Onshore 11930 + offshore 70 MW cumulative by 2030
-Norway,wind,6040,5183,WindEurope - Wind energy in Europe: 2025 statistics and the outlook for 2026-2030,2026-02,Onshore 5590 + offshore 450 MW cumulative by 2030
-Sweden,wind,20810,18515,WindEurope - Wind energy in Europe: 2025 statistics and the outlook for 2026-2030,2026-02,Onshore 20620 + offshore 190 MW cumulative by 2030
+Denmark,wind,8908.5,7508,WindEurope - Wind energy in Europe: 2025 statistics and the outlook for 2026-2030,2026-02,"IRENA 2025 plus WindEurope's expected 2026-30 growth (+1,362 MW); WindEurope's own 2030 total is 8,870 MW on its slightly different count"
+Finland,wind,11879.0,9504,WindEurope - Wind energy in Europe: 2025 statistics and the outlook for 2026-2030,2026-02,"IRENA 2025 plus WindEurope's expected 2026-30 growth (+2,496 MW); WindEurope's own 2030 total is 12,000 MW on its slightly different count"
+Norway,wind,6015.0,5183,WindEurope - Wind energy in Europe: 2025 statistics and the outlook for 2026-2030,2026-02,"IRENA 2025 plus WindEurope's expected 2026-30 growth (+857 MW); WindEurope's own 2030 total is 6,040 MW on its slightly different count"
+Sweden,wind,19675.6,18515,WindEurope - Wind energy in Europe: 2025 statistics and the outlook for 2026-2030,2026-02,"IRENA 2025 plus WindEurope's expected 2026-30 growth (+2,295 MW); WindEurope's own 2030 total is 20,810 MW on its slightly different count"
 Denmark,solar,11700,,SolarPower Europe 2023 outlook (as cited by DNV),2024-02,Older forecast made before 2024
 Finland,solar,3000,,SolarPower Europe 2023 outlook (as cited by DNV),2024-02,Approximate: source says capacity will almost triple by 2030 from about 1 GW at end-2023
 Norway,solar,3000,,DNV Energy Transition Outlook (as cited by DNV),2024-02,Older forecast made before 2024
