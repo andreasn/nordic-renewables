@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nordic Solar &amp; Wind</title>
+<meta name="description" content="Installed capacity and electricity generation from solar and wind in Denmark, Finland, Norway and Sweden, 2000–2025, with industry estimates to 2030.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='7' fill='%23e0a526'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light;
+  --font-anthropic-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-anthropic-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --color-bg: #faf9f6;
+  --color-panel: #ffffff;
+  --color-fg: #1f1e1b;
+  --color-fg-muted: #6b675f;
+  --color-border-line: #e5e2db;
+  --color-bad: #c23b2b;
+  --series-1: #2f6fdb; --series-2: #d9822b; --series-3: #2a9d78; --series-4: #9b51c9;
+  --series-5: #c2417a; --series-6: #5b8c2a; --series-7: #1d9bb5; --series-8: #8a6d3b;
+  --cds-font-size-caption: 0.8125rem;
+  --cds-font-size-body: 0.9375rem;
+  --cds-font-size-heading: 1.0625rem;
+  --cds-font-size-title: 2rem;
+  --cds-font-weight-medium: 500;
+  --cds-gap-xs: 0.25rem; --cds-gap-sm: 0.5rem; --cds-gap-md: 1rem; --cds-gap-lg: 1.5rem; --cds-gap-xl: 2.5rem;
+  --cds-pad-xs: 0.25rem; --cds-pad-sm: 0.5rem; --cds-pad-md: 0.75rem; --cds-pad-lg: 1.25rem;
+  --cds-radius: 10px;
+  --cds-chart-grid: #ece9e3;
+  --cds-chart-axis: #b9b4aa;
+  --cds-chart-reference: #8f8a80;
+  --cds-surface-popover: #ffffff;
+  --cds-border: #ddd9d1;
+  --cds-shadow-popover: 0 4px 16px rgba(0,0,0,.10);
+  --cds-text-secondary: #6b675f;
+  --cds-dur-slow: 300ms;
+  --skeleton: #ece9e3;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --color-bg: #1a1917; --color-panel: #23221f; --color-fg: #ecebe7; --color-fg-muted: #a39f96;
+    --color-border-line: #36342f; --color-bad: #f07060;
+    --series-1: #6c9cf0; --series-2: #f0a050; --series-3: #4cc59e; --series-4: #be86e6;
+    --series-5: #e47aa6; --series-6: #8fbf5a; --series-7: #4fc3dc; --series-8: #c9a46a;
+    --cds-chart-grid: #2f2d29; --cds-chart-axis: #57534c; --cds-chart-reference: #8a857b;
+    --cds-surface-popover: #2b2a26; --cds-border: #3d3b36; --cds-shadow-popover: 0 4px 16px rgba(0,0,0,.45);
+    --cds-text-secondary: #a39f96; --skeleton: #2f2d29;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #1a1917; --color-panel: #23221f; --color-fg: #ecebe7; --color-fg-muted: #a39f96;
+  --color-border-line: #36342f; --color-bad: #f07060;
+  --series-1: #6c9cf0; --series-2: #f0a050; --series-3: #4cc59e; --series-4: #be86e6;
+  --series-5: #e47aa6; --series-6: #8fbf5a; --series-7: #4fc3dc; --series-8: #c9a46a;
+  --cds-chart-grid: #2f2d29; --cds-chart-axis: #57534c; --cds-chart-reference: #8a857b;
+  --cds-surface-popover: #2b2a26; --cds-border: #3d3b36; --cds-shadow-popover: 0 4px 16px rgba(0,0,0,.45);
+  --cds-text-secondary: #a39f96; --skeleton: #2f2d29;
+}
+html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); font-family: var(--font-anthropic-sans); line-height: 1.5; -webkit-text-size-adjust: 100%; }
+#dash-root { --dash-gutter: clamp(16px, 4vw, 48px); max-width: 1200px; margin: 0 auto; padding: clamp(24px, 4vw, 48px) var(--dash-gutter) 48px; box-sizing: border-box; overflow-x: hidden; }
+#dash-root *, #dash-root *::before, #dash-root *::after { box-sizing: border-box; }
+#dash-root .dash-skeleton { color: transparent !important; background: var(--skeleton); border-radius: 4px; display: inline-block; min-width: 2.5em; }
+#dash-root .nx-chart.dash-skeleton { display: block; width: 100%; }
+@media (prefers-reduced-motion: no-preference) {
+  #dash-root .dash-skeleton { animation: nx-pulse 1.4s ease-in-out infinite; }
+  @keyframes nx-pulse { 50% { opacity: .55; } }
+}
+#dash-root .nx-foot { margin-top: var(--cds-gap-lg); padding-top: var(--cds-gap-md); border-top: 1px solid var(--color-border-line); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+#dash-root .nx-foot a, #dash-root .nx-src a { color: inherit; }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="assets/dash.js"></script>
+</head>
+<body>
+<div id="dash-root">
+<style>
+#dash-root .nx { font-family: var(--font-anthropic-sans); color: var(--color-fg); }
+#dash-root .nx-head h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0 0 var(--cds-gap-xs); }
+#dash-root .nx-take { color: var(--color-fg-muted); font-size: var(--cds-font-size-body); margin: 0 0 var(--cds-gap-lg); max-width: 60rem; }
+#dash-root .nx-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr)); gap: var(--cds-gap-md); margin-bottom: var(--cds-gap-xl); }
+#dash-root .nx-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; }
+#dash-root .nx-tile-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+#dash-root .nx-big { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; margin: var(--cds-gap-xs) 0; }
+#dash-root .nx-big .nx-unit { font-family: var(--font-anthropic-sans); font-size: var(--cds-font-size-body); color: var(--color-fg-muted); margin-left: 0.25rem; }
+#dash-root .nx-sub { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+#dash-root .nx-sec { margin: var(--cds-gap-xl) 0 var(--cds-gap-md); font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
+#dash-root .nx-secnote { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin: calc(-1 * var(--cds-gap-sm)) 0 var(--cds-gap-md); }
+#dash-root .nx-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: var(--cds-gap-md); margin-bottom: var(--cds-gap-md); }
+#dash-root .nx-card h3 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
+#dash-root .nx-note { margin: var(--cds-gap-xs) 0 var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+#dash-root .nx-chart { position: relative; min-height: 280px; }
+#dash-root .nx-chart svg { display: block; overflow: visible; }
+#dash-root .nx-chart text { font-family: var(--font-anthropic-sans); }
+#dash-root .nx-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); white-space: nowrap; display: none; z-index: 2; font-variant-numeric: tabular-nums; }
+#dash-root .nx-tip .nx-tip-h { color: var(--cds-text-secondary); margin-bottom: 2px; }
+#dash-root .nx-tip .nx-sw { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; }
+#dash-root .nx-tip .nx-tv { float: right; margin-left: 12px; }
+#dash-root .nx-tools { display: flex; gap: var(--cds-gap-sm); align-items: center; margin-bottom: var(--cds-gap-sm); flex-wrap: wrap; }
+#dash-root .nx-tools input { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-sm); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-bg); color: var(--color-fg); min-width: 0; flex: 1 1 10rem; max-width: 18rem; }
+#dash-root .nx-tablebox { max-height: 26rem; overflow: auto; }
+#dash-root .nx-table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+#dash-root .nx-table th { position: sticky; top: 0; background: var(--color-panel); text-align: right; padding: 0; border-bottom: 1px solid var(--color-border-line); }
+#dash-root .nx-table th:first-child, #dash-root .nx-table td:first-child { text-align: left; }
+#dash-root .nx-table th button { font: inherit; color: var(--color-fg-muted); background: none; border: 0; padding: var(--cds-pad-xs) var(--cds-pad-sm); cursor: pointer; width: 100%; text-align: inherit; }
+#dash-root .nx-table th[aria-sort] button { color: var(--color-fg); }
+#dash-root .nx-table td { padding: var(--cds-pad-xs) var(--cds-pad-sm); text-align: right; border-bottom: 1px solid var(--color-border-line); }
+#dash-root .nx-table.nx-plain th { padding: var(--cds-pad-xs) var(--cds-pad-sm); color: var(--color-fg-muted); font-weight: 400; white-space: nowrap; }
+#dash-root .nx-table .nx-l { text-align: left; }
+#dash-root .nx-table td.nx-l { min-width: 14rem; color: var(--color-fg-muted); }
+#dash-root .nx-src { margin-top: var(--cds-gap-xl); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); max-width: 60rem; }
+#dash-root .nx-src p { margin: 0 0 var(--cds-gap-sm); }
+#dash-root .nx-fail { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 260px; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+#dash-root .nx-fail::before { content: ""; width: 0.375rem; height: 0.375rem; border-radius: 50%; background: var(--color-bad); }
+#dash-root [data-dash-source-state=empty] { color: transparent; }
+#dash-root [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+</style>
+
+<div class="nx">
+  <header class="nx-head">
+    <h1 id="title">Nordic solar &amp; wind</h1>
+    <p class="nx-take" id="takeaway">Across Denmark, Finland, Norway and Sweden, wind capacity reached
+      <b data-source="nordic_totals" data-field="value" data-where="metric=wind_capacity" class="dash-skeleton">—</b> GW and solar
+      <b data-source="nordic_totals" data-field="value" data-where="metric=solar_capacity" class="dash-skeleton">—</b> GW in
+      <span data-source="nordic_totals" data-field="year" data-where="metric=wind_capacity" class="dash-skeleton">—</span>. Solar is the faster grower:
+      <b data-source="nordic_totals" data-field="growth" data-where="metric=solar_capacity" class="dash-skeleton">—</b>× in ten years, against
+      <b data-source="nordic_totals" data-field="growth" data-where="metric=wind_capacity" class="dash-skeleton">—</b>× for wind. Industry outlooks point to about
+      <b data-source="outlook_totals" data-field="forecast_2030_gw" data-where="tech=wind" class="dash-skeleton">—</b> GW of wind and
+      <b data-source="outlook_totals" data-field="forecast_2030_gw" data-where="tech=solar" class="dash-skeleton">—</b> GW of solar by 2030.</p>
+  </header>
+
+  <div class="nx-tiles" id="tiles"></div>
+
+  <h2 class="nx-sec" id="capacity">Installed capacity</h2>
+  <p class="nx-secnote">IRENA Renewable Energy Statistics 2026, end-of-year installed capacity. The shaded column at the right of each chart is the industry estimate for 2030. Charts in GW, table in MW.</p>
+  <div class="nx-grid">
+    <div class="nx-card"><h3 id="cap-wind-title">Wind capacity</h3><p class="nx-note">Onshore and offshore combined, stacked by country, GW</p>
+      <div class="nx-chart" id="cap-wind" data-source="capacity forecast"></div></div>
+    <div class="nx-card"><h3 id="cap-solar-title">Solar capacity</h3><p class="nx-note">Total solar, stacked by country, GW</p>
+      <div class="nx-chart" id="cap-solar" data-source="capacity forecast"></div></div>
+  </div>
+  <div class="nx-card" id="cap-table-card"><h3>Capacity by country and year</h3><p class="nx-note">MW · sort by any column, search by country or year</p>
+    <div class="nx-tools"><input type="search" placeholder="Search, e.g. Sweden or 2025" aria-label="Search capacity table" id="cap-q"></div>
+    <div class="nx-tablebox"><table class="nx-table" id="cap-table" data-source="capacity" data-row-key="country,year">
+      <thead><tr><th data-field="country"><button>Country</button></th><th data-field="year"><button>Year</button></th><th data-field="solar_mw"><button>Solar (MW)</button></th><th data-field="wind_mw"><button>Wind (MW)</button></th></tr></thead>
+      <tbody></tbody></table></div></div>
+
+  <h2 class="nx-sec" id="outlook">Industry outlook to 2030</h2>
+  <p class="nx-secnote">Wind: WindEurope's outlook from February 2026, a current country-by-country forecast. Solar: the most recent published industry figures available, from early 2024 (SolarPower Europe's newer country forecasts sit behind a sign-up), so treat them as older and less certain.</p>
+  <div class="nx-card" id="out-card"><h3>2030 forecast by country</h3><p class="nx-note">MW · change is measured from IRENA's 2025 figure; forecasters count capacity slightly differently, so small gaps are definitional</p>
+    <div class="nx-tablebox"><table class="nx-table nx-plain" id="out-table" data-source="forecast" data-row-key="country,tech">
+      <thead><tr><th data-field="country">Country</th><th data-field="tech">Technology</th><th data-source="outlook" data-field="irena_2025_mw">IRENA 2025</th><th data-field="forecast_2030_mw">2030 forecast</th><th data-source="outlook" data-field="change_mw">Change</th><th data-field="source" class="nx-l">Source</th><th data-field="note" class="nx-l">Note</th></tr></thead>
+      <tbody></tbody></table></div></div>
+
+  <h2 class="nx-sec" id="generation">Electricity generation</h2>
+  <p class="nx-secnote">Eurostat gross electricity production, the official series IRENA's European generation figures draw on. Charts in TWh, table in GWh. Latest published year is one behind capacity. The shaded column at the right is an estimate for 2030: forecast capacity times each country's 2022–24 capacity factor, with a whisker for the weakest and strongest weather year.</p>
+  <div class="nx-tiles">
+    <div class="nx-card"><div class="nx-tile-label">Estimated Nordic wind generation, 2030</div>
+      <div class="nx-big"><span class="dash-skeleton" data-source="gen_estimate_totals" data-field="est_2030_twh" data-where="tech=wind">—</span><span class="nx-unit">TWh</span></div>
+      <div class="nx-sub">range <span data-source="gen_estimate_totals" data-field="low_twh" data-where="tech=wind"></span>–<span data-source="gen_estimate_totals" data-field="high_twh" data-where="tech=wind"></span> · 2024: <span data-source="gen_estimate_totals" data-field="gen_2024_twh" data-where="tech=wind"></span></div></div>
+    <div class="nx-card"><div class="nx-tile-label">Estimated Nordic solar generation, 2030</div>
+      <div class="nx-big"><span class="dash-skeleton" data-source="gen_estimate_totals" data-field="est_2030_twh" data-where="tech=solar">—</span><span class="nx-unit">TWh</span></div>
+      <div class="nx-sub">range <span data-source="gen_estimate_totals" data-field="low_twh" data-where="tech=solar"></span>–<span data-source="gen_estimate_totals" data-field="high_twh" data-where="tech=solar"></span> · 2024: <span data-source="gen_estimate_totals" data-field="gen_2024_twh" data-where="tech=solar"></span></div></div>
+  </div>
+  <div class="nx-grid">
+    <div class="nx-card"><h3 id="gen-wind-title">Wind generation</h3><p class="nx-note">Stacked by country, TWh per year</p>
+      <div class="nx-chart" id="gen-wind" data-source="generation gen_estimate gen_estimate_totals"></div></div>
+    <div class="nx-card"><h3 id="gen-solar-title">Solar generation</h3><p class="nx-note">Solar PV, stacked by country, TWh per year</p>
+      <div class="nx-chart" id="gen-solar" data-source="generation gen_estimate gen_estimate_totals"></div></div>
+  </div>
+  <div class="nx-card" id="est-card" style="margin-bottom: var(--cds-gap-md)"><h3>2030 generation estimate by country</h3><p class="nx-note">Capacity factor is the 2022–24 average; range uses the weakest and strongest of those years. Likely conservative for wind (newer turbines and offshore run higher) and excludes curtailment.</p>
+    <div class="nx-tablebox"><table class="nx-table nx-plain" id="est-table" data-source="gen_estimate" data-row-key="country,tech">
+      <thead><tr><th data-field="country">Country</th><th data-field="tech">Technology</th><th data-field="capacity_factor">Capacity factor</th><th data-field="gen_2024_twh">2024 (TWh)</th><th data-field="est_2030_twh">2030 est. (TWh)</th><th data-field="low_twh">Range (TWh)</th></tr></thead>
+      <tbody></tbody></table></div></div>
+  <div class="nx-card" id="gen-table-card"><h3>Generation by country and year</h3><p class="nx-note">GWh · sort by any column, search by country or year</p>
+    <div class="nx-tools"><input type="search" placeholder="Search, e.g. Denmark or 2024" aria-label="Search generation table" id="gen-q"></div>
+    <div class="nx-tablebox"><table class="nx-table" id="gen-table" data-source="generation" data-row-key="country,year">
+      <thead><tr><th data-field="country"><button>Country</button></th><th data-field="year"><button>Year</button></th><th data-field="solar_gwh"><button>Solar (GWh)</button></th><th data-field="wind_gwh"><button>Wind (GWh)</button></th></tr></thead>
+      <tbody></tbody></table></div></div>
+
+  <div class="nx-src" id="about">
+    <p><b>Capacity:</b> IRENA, Renewable Energy Statistics 2026 (published July 2026), via Our World in Data's copy of the series; wind is onshore plus offshore, solar is total solar. Norway's solar series starts later than the others.</p>
+    <p><b>2030 outlook:</b> wind from WindEurope, Wind energy in Europe: 2025 statistics and the outlook for 2026-2030 (February 2026), expected cumulative onshore plus offshore capacity by 2030. Solar from DNV's February 2024 article on Nordic solar, which cites SolarPower Europe's 2023 outlook for Denmark, Sweden and Finland and DNV's own Energy Transition Outlook for Norway. Finland's solar figure is approximate: the source says capacity will almost triple from about 1 GW.</p>
+    <p><b>Generation:</b> IRENA's generation table is only available through its query database, so this uses Eurostat's gross electricity production (dataset nrg_bal_peh, wind and solar PV), the official statistics IRENA's European figures draw on. Sweden's values match IRENA's country profile exactly; Denmark's recent solar output is higher in Eurostat's current release than in IRENA's profile, most likely from later revisions, so small gaps against IRENA are possible.</p>
+  </div>
+</div>
+
+
+<footer class="nx-foot">
+  Data files: <a href="data/nordic_capacity_irena.csv">capacity (IRENA)</a> ·
+  <a href="data/nordic_generation_eurostat.csv">generation (Eurostat)</a> ·
+  <a href="data/nordic_outlook_2030.csv">2030 outlook</a>.
+  Sources: <a href="https://www.irena.org/Publications/2026/Jul/Renewable-energy-statistics-2026">IRENA Renewable Energy Statistics 2026</a>,
+  <a href="https://ec.europa.eu/eurostat/databrowser/view/nrg_bal_peh/default/table">Eurostat nrg_bal_peh</a>,
+  <a href="https://windeurope.org/data/product/wind-energy-in-europe-2025-statistics-and-the-outlook-for-2026-2030">WindEurope outlook 2026–2030</a>,
+  <a href="https://www.dnv.com/article/financing-the-energy-transition-solar-sunrise-in-the-nordics/">DNV (solar outlook)</a>.
+  Data as of October 2026.
+</footer>
+<script>
+(function () {
+  const COUNTRIES = ['Denmark', 'Finland', 'Norway', 'Sweden'];
+  window.nxCountries = COUNTRIES;
+
+  dash.calc('nordic_totals', {
+    title: 'Nordic totals',
+    description: 'Sum of the four countries in the latest year and ten years earlier, in GW or TWh.',
+    inputs: ['capacity', 'generation'],
+    fn: (capacity, generation) => {
+      const sum = (rows, y, col) => rows.filter(r => Number(r.year) === y).reduce((s, r) => s + (Number(r[col]) || 0), 0);
+      const latest = rows => Math.max(...rows.map(r => Number(r.year)));
+      const row = (metric, rows, col, unit) => {
+        const year = latest(rows), base_year = year - 10;
+        const value = Math.round(sum(rows, year, col) / 100) / 10;
+        const base = Math.round(sum(rows, base_year, col) / 100) / 10;
+        return { metric, unit, year, value, base_year, base, growth: Math.round(sum(rows, year, col) / sum(rows, base_year, col) * 10) / 10 };
+      };
+      return [
+        row('wind_capacity', capacity, 'wind_mw', 'GW'),
+        row('solar_capacity', capacity, 'solar_mw', 'GW'),
+        row('wind_generation', generation, 'wind_gwh', 'TWh'),
+        row('solar_generation', generation, 'solar_gwh', 'TWh')
+      ];
+    }
+  });
+
+  const TILES = [
+    ['wind_capacity', 'Nordic wind capacity'],
+    ['solar_capacity', 'Nordic solar capacity'],
+    ['wind_generation', 'Nordic wind generation'],
+    ['solar_generation', 'Nordic solar generation']
+  ];
+  const tiles = document.getElementById('tiles');
+  TILES.forEach(([m, label]) => {
+    const card = document.createElement('div');
+    card.className = 'nx-card';
+    card.innerHTML =
+      '<div class="nx-tile-label"></div>' +
+      '<div class="nx-big"><span class="dash-skeleton" data-source="nordic_totals" data-field="value" data-where="metric=' + m + '">—</span><span class="nx-unit" data-source="nordic_totals" data-field="unit" data-where="metric=' + m + '"></span></div>' +
+      '<div class="nx-sub"><span data-source="nordic_totals" data-field="year" data-where="metric=' + m + '"></span> · up from <span data-source="nordic_totals" data-field="base" data-where="metric=' + m + '"></span> in <span data-source="nordic_totals" data-field="base_year" data-where="metric=' + m + '"></span></div>';
+    card.querySelector('.nx-tile-label').textContent = label;
+    tiles.appendChild(card);
+  });
+
+  const f1 = d3.format(',.1f');
+  dash.onData(() => {
+    const t = dash.data('nordic_totals');
+    const marks = document.querySelectorAll('[data-source="nordic_totals"]');
+    if (t.status !== 'ok' || !Array.isArray(t.data)) {
+      if (t.status === 'error') marks.forEach(el => { el.classList.remove('dash-skeleton'); el.textContent = '—'; });
+      return;
+    }
+    const by = {};
+    t.data.forEach(r => { by[r.metric] = r; });
+    marks.forEach(el => {
+      el.classList.remove('dash-skeleton');
+      const r = by[new URLSearchParams(el.dataset.where).get('metric')];
+      const f = el.dataset.field;
+      if (!r) { el.textContent = '—'; return; }
+      const v = r[f];
+      el.textContent = (f === 'value' || f === 'base' || f === 'growth') ? f1(v) : String(v);
+    });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  dash.calc('outlook', {
+    title: 'Forecast vs 2025',
+    description: "IRENA's 2025 capacity for each forecast, and the change to the 2030 forecast, in MW.",
+    inputs: ['forecast', 'capacity'],
+    fn: (forecast, capacity) => forecast.map(f => {
+      const r = capacity.find(c => c.country === f.country && Number(c.year) === 2025);
+      const base = r && r[f.tech + '_mw'] !== '' ? Number(r[f.tech + '_mw']) : null;
+      return { country: f.country, tech: f.tech, irena_2025_mw: base, change_mw: base == null ? null : Math.round((Number(f.forecast_2030_mw) - base) * 10) / 10 };
+    })
+  });
+  dash.calc('outlook_totals', {
+    title: 'Nordic 2030 forecast',
+    description: 'Sum of the four countries\' 2030 industry forecasts, in GW.',
+    inputs: ['forecast'],
+    fn: (forecast) => ['wind', 'solar'].map(tech => ({
+      tech,
+      forecast_2030_gw: Math.round(forecast.filter(f => f.tech === tech).reduce((s, f) => s + Number(f.forecast_2030_mw), 0) / 100) / 10
+    }))
+  });
+
+  const nf = d3.format(',');
+  const sf = d3.format('+,');
+  dash.onData(() => {
+    const t = dash.data('outlook_totals');
+    document.querySelectorAll('[data-source="outlook_totals"]').forEach(el => {
+      if (t.status !== 'ok') { if (t.status === 'error') { el.classList.remove('dash-skeleton'); el.textContent = '—'; } return; }
+      el.classList.remove('dash-skeleton');
+      const r = t.data.find(q => q.tech === new URLSearchParams(el.dataset.where).get('tech'));
+      el.textContent = r ? d3.format(',.1f')(r.forecast_2030_gw) : '—';
+    });
+
+    const fc = dash.data('forecast'), oc = dash.data('outlook');
+    const tb = document.querySelector('#out-table tbody');
+    tb.textContent = '';
+    if (fc.status !== 'ok') return;
+    const extra = oc.status === 'ok' ? oc.data : [];
+    const techName = { wind: 'Wind', solar: 'Solar' };
+    fc.data.slice().sort((a, b) => a.tech === b.tech ? (a.country < b.country ? -1 : 1) : (a.tech === 'wind' ? -1 : 1)).forEach(f => {
+      const e = extra.find(q => q.country === f.country && q.tech === f.tech) || {};
+      const tr = document.createElement('tr');
+      const cells = [
+        [f.country, true], [f.tech, true],
+        [e.irena_2025_mw == null ? '—' : nf(e.irena_2025_mw)],
+        [nf(Number(f.forecast_2030_mw))],
+        [e.change_mw == null ? '—' : sf(e.change_mw)],
+        [f.source + ' (' + f.published + ')', true, true],
+        [f.note, true, true]
+      ];
+      cells.forEach(([v, left, wide]) => {
+        const td = document.createElement('td');
+        if (left) td.style.textAlign = 'left';
+        if (wide) td.className = 'nx-l';
+        td.textContent = v; tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  dash.calc('gen_estimate', {
+    title: '2030 generation estimate',
+    description: "2030 forecast capacity times each country's 2022-24 capacity factor (generation over average of start- and end-year capacity); low and high use the weakest and strongest of those years.",
+    inputs: ['forecast', 'capacity', 'generation'],
+    fn: (forecast, capacity, generation) => forecast.map(f => {
+      const col = f.tech;
+      const cap = y => { const r = capacity.find(c => c.country === f.country && Number(c.year) === y); return r ? Number(r[col + '_mw']) : NaN; };
+      const gen = y => { const r = generation.find(g => g.country === f.country && Number(g.year) === y); return r ? Number(r[col + '_gwh']) : NaN; };
+      const cfs = [2022, 2023, 2024].map(y => gen(y) / (((cap(y - 1) + cap(y)) / 2) * 8.76));
+      const cf = cfs.reduce((a, b) => a + b, 0) / cfs.length;
+      const twh = k => Math.round(Number(f.forecast_2030_mw) * 8.76 * k / 100) / 10;
+      return {
+        country: f.country, tech: f.tech,
+        capacity_factor: Math.round(cf * 1000) / 10,
+        gen_2024_twh: Math.round(gen(2024) / 100) / 10,
+        est_2030_twh: twh(cf), low_twh: twh(Math.min(...cfs)), high_twh: twh(Math.max(...cfs))
+      };
+    })
+  });
+  dash.calc('gen_estimate_totals', {
+    title: 'Nordic 2030 generation estimate',
+    description: 'Sum of the four countries\' 2030 generation estimates, TWh.',
+    inputs: ['gen_estimate'],
+    fn: (gen_estimate) => ['wind', 'solar'].map(tech => {
+      const rows = gen_estimate.filter(r => r.tech === tech);
+      const sum = k => Math.round(rows.reduce((s, r) => s + r[k], 0) * 10) / 10;
+      return { tech, gen_2024_twh: sum('gen_2024_twh'), est_2030_twh: sum('est_2030_twh'), low_twh: sum('low_twh'), high_twh: sum('high_twh') };
+    })
+  });
+
+  const f1 = d3.format(',.1f');
+  dash.onData(() => {
+    const t = dash.data('gen_estimate_totals');
+    document.querySelectorAll('[data-source="gen_estimate_totals"]').forEach(el => {
+      if (t.status !== 'ok') { if (t.status === 'error') { el.classList.remove('dash-skeleton'); el.textContent = '—'; } return; }
+      el.classList.remove('dash-skeleton');
+      const r = t.data.find(q => q.tech === new URLSearchParams(el.dataset.where).get('tech'));
+      el.textContent = r ? f1(r[el.dataset.field]) : '—';
+    });
+    const e = dash.data('gen_estimate');
+    const tb = document.querySelector('#est-table tbody');
+    tb.textContent = '';
+    if (e.status !== 'ok') return;
+    e.data.slice().sort((a, b) => a.tech === b.tech ? (a.country < b.country ? -1 : 1) : (a.tech === 'wind' ? -1 : 1)).forEach(r => {
+      const tr = document.createElement('tr');
+      [[r.country, 1], [r.tech, 1], [f1(r.capacity_factor) + '%'], [f1(r.gen_2024_twh)], [f1(r.est_2030_twh)], [f1(r.low_twh) + '–' + f1(r.high_twh)]].forEach(([v, left]) => {
+        const td = document.createElement('td'); if (left) td.style.textAlign = 'left'; td.textContent = v; tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  const COUNTRIES = window.nxCountries;
+  const nf = d3.format(',');
+
+  function lineChart(box, status, rows, col, div, unit, fc) {
+    box.innerHTML = '';
+    if (status === 'error' || status === 'connect' || status === 'declined') {
+      const f = document.createElement('div'); f.className = 'nx-fail'; f.textContent = 'Failed to load'; box.appendChild(f); return;
+    }
+    if (status !== 'ok') { box.classList.add('dash-skeleton'); return; }
+    box.classList.remove('dash-skeleton');
+
+    const W = Math.max(280, box.clientWidth || 600), H = 280, mt = 18, mb = 26;
+    const years = d3.extent(rows, r => Number(r.year));
+    const yrList = d3.range(years[0], years[1] + 1);
+    const val = (c, y) => {
+      const r = rows.find(q => q.country === c && Number(q.year) === y);
+      return r && r[col] !== '' && r[col] != null && !isNaN(Number(r[col])) ? Number(r[col]) / div : null;
+    };
+    const table = yrList.map(y => { const o = { year: y }; COUNTRIES.forEach(c => { o[c] = val(c, y); }); return o; });
+    const lastRow = table[table.length - 1];
+    const order = COUNTRIES.slice().sort((a, b) => (lastRow[b] || 0) - (lastRow[a] || 0));
+    const stacked = d3.stack().keys(order).value((d, k) => d[k] || 0)(table);
+    const colorOf = c => dash.colors[COUNTRIES.indexOf(c)];
+    const totals = table.map(d => order.reduce((s, k) => s + (d[k] || 0), 0));
+
+    const hasFc = !!(fc && fc.values && Object.keys(fc.values).length);
+    let fcStack = [], fcTotal = 0;
+    if (hasFc) {
+      let acc = 0;
+      fcStack = order.map(c => { const v = fc.values[c] || 0; const s = { c, v, y0: acc, y1: acc + v }; acc += v; return s; });
+      fcTotal = acc;
+    }
+    const vmax = Math.max(d3.max(totals) || 0, fcTotal, (fc && fc.range) ? fc.range[1] : 0) || 1;
+    const valFmt = v => (vmax < 10 ? d3.format(',.2f') : d3.format(',.1f'))(v);
+
+    const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img');
+    const y = d3.scaleLinear([0, vmax * 1.08], [H - mb, mt]).nice();
+    const yTicks = y.ticks(5);
+    const yFmt = d3.format(vmax < 2 ? '.1f' : ',.0f');
+
+    const meas = svg.append('g').attr('font-size', 12);
+    let ml = 0;
+    yTicks.forEach(t => { const n = meas.append('text').text(yFmt(t)); ml = Math.max(ml, n.node().getComputedTextLength()); });
+    let mr = 0;
+    if (hasFc) {
+      order.forEach(c => { const n = meas.append('text').text(c); mr = Math.max(mr, n.node().getComputedTextLength()); });
+    } else {
+      order.forEach(c => { const n = meas.append('text').text(c + ' ' + valFmt(lastRow[c] || 0)); mr = Math.max(mr, n.node().getComputedTextLength()); });
+      const n = meas.append('text').attr('font-weight', 600).text('Total ' + valFmt(totals[totals.length - 1])); mr = Math.max(mr, n.node().getComputedTextLength());
+    }
+    meas.remove();
+    ml += 8; mr += 10;
+
+    const colW = hasFc ? 22 : 0, colGap = hasFc ? 18 : 0;
+    const xEnd = W - mr - colW - colGap;
+    const colX = xEnd + colGap;
+    const x = d3.scaleLinear(years, [ml, xEnd]);
+    const g = svg.append('g');
+    g.selectAll('line.grid').data(yTicks).join('line')
+      .attr('x1', ml).attr('x2', hasFc ? colX + colW : xEnd).attr('y1', d => y(d)).attr('y2', d => y(d))
+      .attr('stroke', 'var(--cds-chart-grid)').attr('stroke-width', 1);
+    g.selectAll('text.yt').data(yTicks).join('text')
+      .attr('x', ml - 6).attr('y', d => y(d)).attr('dy', '0.32em').attr('text-anchor', 'end')
+      .attr('font-size', 12).attr('fill', 'var(--color-fg-muted)').text(d => yFmt(d));
+    g.append('text').attr('x', ml - 6).attr('y', mt - 6).attr('text-anchor', 'end').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(unit);
+
+    const step = W < 420 ? 10 : 5;
+    let xt = d3.range(Math.ceil(years[0] / step) * step, years[1] + 1, step);
+    if (hasFc) xt = xt.filter(t => x(years[1]) - x(t) > 30 || t === years[1]);
+    g.selectAll('text.xt').data(xt).join('text')
+      .attr('x', d => x(d)).attr('y', H - mb + 16).attr('text-anchor', d => (hasFc && d === years[1]) ? 'end' : 'middle')
+      .attr('font-size', 12).attr('fill', 'var(--color-fg-muted)').text(d => String(d));
+
+    const area = d3.area().x(d => x(d.data.year)).y0(d => y(d[0])).y1(d => y(d[1]));
+    stacked.forEach(layer => {
+      g.append('path').attr('d', area(layer)).attr('fill', colorOf(layer.key)).attr('fill-opacity', 0.85)
+        .attr('stroke', 'var(--color-panel)').attr('stroke-width', 0.75);
+    });
+    g.append('line').attr('x1', ml).attr('x2', hasFc ? colX + colW : xEnd).attr('y1', H - mb).attr('y2', H - mb).attr('stroke', 'var(--cds-chart-axis)');
+
+    const labs = [];
+    if (hasFc) {
+      // 2030 industry estimate: a lighter stacked column with dashed edges
+      fcStack.forEach(s => {
+        if (s.v <= 0) return;
+        g.append('rect').attr('x', colX).attr('width', colW).attr('y', y(s.y1)).attr('height', Math.max(0, y(s.y0) - y(s.y1)))
+          .attr('fill', colorOf(s.c)).attr('fill-opacity', 0.4)
+          .attr('stroke', colorOf(s.c)).attr('stroke-width', 1).attr('stroke-dasharray', '3 2');
+      });
+      g.append('text').attr('x', colX + colW / 2).attr('y', H - mb + 16).attr('text-anchor', 'middle')
+        .attr('font-size', 12).attr('fill', 'var(--color-fg-muted)').text('2030');
+      let topY = y(fcTotal);
+      if (fc.range) {
+        const wx = colX + colW / 2, y1 = y(fc.range[1]), y0 = y(fc.range[0]);
+        g.append('line').attr('x1', wx).attr('x2', wx).attr('y1', y1).attr('y2', y0).attr('stroke', 'var(--color-fg)').attr('stroke-width', 1.25);
+        [y0, y1].forEach(yy => g.append('line').attr('x1', wx - 5).attr('x2', wx + 5).attr('y1', yy).attr('y2', yy).attr('stroke', 'var(--color-fg)').attr('stroke-width', 1.25));
+        topY = Math.min(topY, y1);
+      }
+      g.append('text').attr('x', colX + colW / 2).attr('y', topY - 6).attr('text-anchor', 'middle')
+        .attr('font-size', 12).attr('font-weight', 600).attr('fill', 'var(--color-fg)').text(valFmt(fcTotal));
+      g.append('text').attr('x', x(years[1])).attr('y', y(totals[totals.length - 1]) - 6).attr('text-anchor', 'end')
+        .attr('font-size', 12).attr('font-weight', 600).attr('fill', 'var(--color-fg)').text(valFmt(totals[totals.length - 1]));
+      fcStack.forEach(s => labs.push({ c: s.c, ty: y((s.y0 + s.y1) / 2), nameOnly: true }));
+    } else {
+      stacked.forEach(layer => {
+        const p = layer[layer.length - 1];
+        labs.push({ c: layer.key, v: lastRow[layer.key] || 0, ty: y((p[0] + p[1]) / 2) });
+      });
+      labs.push({ c: 'Total', v: totals[totals.length - 1], ty: y(totals[totals.length - 1]) - 2, total: true });
+    }
+    const lx = hasFc ? colX + colW + 6 : x(years[1]) + 6;
+    labs.sort((a, b) => a.ty - b.ty);
+    const gap = 14;
+    for (let i = 1; i < labs.length; i++) if (labs[i].ty - labs[i - 1].ty < gap) labs[i].ty = labs[i - 1].ty + gap;
+    const over = labs.length ? labs[labs.length - 1].ty - (H - mb - 4) : 0;
+    if (over > 0) labs.forEach(l => { l.ty -= over; });
+    labs.forEach(l => {
+      const t = g.append('text').attr('x', lx).attr('y', l.ty).attr('dy', '0.32em').attr('font-size', 12);
+      t.append('tspan').attr('fill', l.total ? 'var(--color-fg)' : colorOf(l.c)).attr('font-weight', l.total ? 600 : 500).text(l.c);
+      if (!l.nameOnly) t.append('tspan').attr('fill', 'var(--color-fg-muted)').text(' ' + valFmt(l.v));
+    });
+
+    // Hover: a year's values by country, or the 2030 estimate over its column
+    const rule = g.append('line').attr('y1', mt).attr('y2', H - mb).attr('stroke', 'var(--cds-chart-reference)').style('display', 'none');
+    const tip = document.createElement('div'); tip.className = 'nx-tip'; box.appendChild(tip);
+    const hide = () => { rule.style('display', 'none'); tip.style.display = 'none'; };
+    const addRow = (label, v, color, bold) => {
+      const r = document.createElement('div');
+      if (bold) r.style.fontWeight = '600';
+      if (color) { const sw = document.createElement('span'); sw.className = 'nx-sw'; sw.style.background = color; r.appendChild(sw); }
+      r.appendChild(document.createTextNode(label));
+      const s = document.createElement('span'); s.className = 'nx-tv'; s.textContent = v == null ? '—' : valFmt(v) + ' ' + unit; r.appendChild(s);
+      tip.appendChild(r);
+    };
+    const place = cx => {
+      tip.style.display = 'block';
+      const scale = box.clientWidth / W;
+      const tw = tip.offsetWidth;
+      let left = cx * scale + 12;
+      if (left + tw > box.clientWidth) left = cx * scale - tw - 12;
+      tip.style.left = Math.max(0, left) + 'px';
+      tip.style.top = '8px';
+    };
+    svg.append('rect').attr('x', ml).attr('y', mt).attr('width', Math.max(0, (hasFc ? colX + colW : xEnd) - ml)).attr('height', H - mb - mt)
+      .attr('fill', 'transparent')
+      .on('pointermove', ev => {
+        const [px] = d3.pointer(ev);
+        tip.textContent = '';
+        const h = document.createElement('div'); h.className = 'nx-tip-h'; tip.appendChild(h);
+        if (hasFc && px > xEnd + colGap / 2) {
+          rule.style('display', 'none');
+          h.textContent = fc.label || '2030 industry estimate';
+          order.slice().reverse().forEach(c => addRow(c, fc.values[c] == null ? null : fc.values[c], colorOf(c)));
+          addRow('Total', fcTotal, null, true);
+          if (fc.range) {
+            const r = document.createElement('div'); r.style.color = 'var(--cds-text-secondary)';
+            r.textContent = 'Weather range ' + valFmt(fc.range[0]) + '–' + valFmt(fc.range[1]) + ' ' + unit;
+            tip.appendChild(r);
+          }
+          place(colX);
+          return;
+        }
+        const yr = Math.round(x.invert(px));
+        if (yr < years[0] || yr > years[1]) { hide(); return; }
+        const d = table[yr - years[0]];
+        const cx = x(yr);
+        rule.attr('x1', cx).attr('x2', cx).style('display', null);
+        h.textContent = String(yr);
+        order.slice().reverse().forEach(c => addRow(c, d[c], colorOf(c)));
+        addRow('Total', totals[yr - years[0]], null, true);
+        place(cx);
+      })
+      .on('pointerleave', hide);
+  }
+
+  function setupTable(tableId, qId, cols) {
+    const table = document.getElementById(tableId);
+    const state = { key: 'year', dir: 'descending', q: '' };
+    const ths = table.querySelectorAll('th');
+    ths.forEach(th => th.querySelector('button').addEventListener('click', () => {
+      const k = th.dataset.field;
+      state.dir = state.key === k && state.dir === 'descending' ? 'ascending' : 'descending';
+      state.key = k; render();
+    }));
+    document.getElementById(qId).addEventListener('input', e => { state.q = e.target.value.trim().toLowerCase(); render(); });
+    let rows = [], status = 'loading';
+    function render() {
+      ths.forEach(th => { if (th.dataset.field === state.key) th.setAttribute('aria-sort', state.dir); else th.removeAttribute('aria-sort'); });
+      const tb = table.querySelector('tbody'); tb.textContent = '';
+      if (status !== 'ok') return;
+      const num = k => k !== 'country';
+      const sorted = rows.filter(r => !state.q || (r.country + ' ' + r.year).toLowerCase().includes(state.q)).slice().sort((a, b) => {
+        let va = a[state.key], vb = b[state.key];
+        if (num(state.key)) { va = va === '' ? -Infinity : Number(va); vb = vb === '' ? -Infinity : Number(vb); }
+        const c = va < vb ? -1 : va > vb ? 1 : 0;
+        if (c === 0) return a.country < b.country ? -1 : 1;
+        return state.dir === 'ascending' ? c : -c;
+      });
+      sorted.forEach(r => {
+        const tr = document.createElement('tr');
+        cols.forEach(k => {
+          const td = document.createElement('td');
+          const v = r[k];
+          td.textContent = (k === 'country' || k === 'year') ? String(v) : (v === '' || v == null ? '—' : nf(Number(v)));
+          tr.appendChild(td);
+        });
+        tb.appendChild(tr);
+      });
+    }
+    return (s, data) => { status = s; rows = data || []; render(); };
+  }
+
+  const capTable = setupTable('cap-table', 'cap-q', ['country', 'year', 'solar_mw', 'wind_mw']);
+  const genTable = setupTable('gen-table', 'gen-q', ['country', 'year', 'solar_gwh', 'wind_gwh']);
+
+  dash.onData(() => {
+    const cap = dash.data('capacity'), gen = dash.data('generation'), fcd = dash.data('forecast');
+    const cr = cap.status === 'ok' ? cap.data : [], gr = gen.status === 'ok' ? gen.data : [];
+    const fcFor = tech => {
+      if (fcd.status !== 'ok') return null;
+      const values = {};
+      fcd.data.filter(f => f.tech === tech).forEach(f => { values[f.country] = Number(f.forecast_2030_mw) / 1000; });
+      return { values };
+    };
+    lineChart(document.getElementById('cap-wind'), cap.status, cr, 'wind_mw', 1000, 'GW', fcFor('wind'));
+    lineChart(document.getElementById('cap-solar'), cap.status, cr, 'solar_mw', 1000, 'GW', fcFor('solar'));
+    const est = dash.data('gen_estimate'), estT = dash.data('gen_estimate_totals');
+    const estFor = tech => {
+      if (est.status !== 'ok' || estT.status !== 'ok') return null;
+      const values = {};
+      est.data.filter(r => r.tech === tech).forEach(r => { values[r.country] = r.est_2030_twh; });
+      const t = estT.data.find(r => r.tech === tech);
+      return { values, range: t ? [t.low_twh, t.high_twh] : null, label: '2030 estimate (capacity × recent capacity factor)' };
+    };
+    lineChart(document.getElementById('gen-wind'), gen.status, gr, 'wind_gwh', 1000, 'TWh', estFor('wind'));
+    lineChart(document.getElementById('gen-solar'), gen.status, gr, 'solar_gwh', 1000, 'TWh', estFor('solar'));
+    capTable(cap.status, cr);
+    genTable(gen.status, gr);
+  });
+})();
+</script>
+</div>
+</body>
+</html>
