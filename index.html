@@ -163,7 +163,7 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
       <tbody></tbody></table></div></div>
 
   <h2 class="nx-sec" id="generation">Electricity generation</h2>
-  <p class="nx-secnote">Eurostat gross electricity production, the official series IRENA's European generation figures draw on. Charts in TWh, table in GWh. Latest published year is one behind capacity. The shaded column at the right is an estimate for 2030: forecast capacity times each country's 2022–24 capacity factor, with a whisker for the weakest and strongest weather year.</p>
+  <p class="nx-secnote">Eurostat gross electricity production, the official series IRENA's European generation figures draw on. Charts in TWh, table in GWh. Actuals run to 2024; the lighter bands from 2025 to 2030 are estimates: each year's end-of-year capacity (IRENA for 2025, the yearly projection after that) times each country's 2022–24 capacity factor. The whisker at 2030 spans the weakest and strongest recent weather year.</p>
   <div class="nx-tiles">
     <div class="nx-card"><div class="nx-tile-label">Estimated Nordic wind generation, 2030</div>
       <div class="nx-big"><span class="dash-skeleton" data-source="gen_estimate_totals" data-field="est_2030_twh" data-where="tech=wind">—</span><span class="nx-unit">TWh</span></div>
@@ -174,10 +174,14 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
   </div>
   <div class="nx-grid">
     <div class="nx-card"><h3 id="gen-wind-title">Wind generation</h3><p class="nx-note">Stacked by country, TWh per year</p>
-      <div class="nx-chart" id="gen-wind" data-source="generation gen_estimate gen_estimate_totals"></div></div>
+      <div class="nx-chart" id="gen-wind" data-source="generation gen_annual gen_estimate_totals"></div></div>
     <div class="nx-card"><h3 id="gen-solar-title">Solar generation</h3><p class="nx-note">Solar PV, stacked by country, TWh per year</p>
-      <div class="nx-chart" id="gen-solar" data-source="generation gen_estimate gen_estimate_totals"></div></div>
+      <div class="nx-chart" id="gen-solar" data-source="generation gen_annual gen_estimate_totals"></div></div>
   </div>
+  <div class="nx-card" id="gen-ann-card" style="margin-bottom: var(--cds-gap-md)"><h3>Estimated generation by year</h3><p class="nx-note">TWh · end-of-year capacity times the country's 2022–24 capacity factor; a run-rate for the capacity in place, before weather swings and curtailment</p>
+    <div class="nx-tablebox"><table class="nx-table nx-plain" id="gen-ann-table" data-source="gen_annual" data-row-key="country,tech,year">
+      <thead><tr><th>Country</th><th>Technology</th><th>2025</th><th>2026</th><th>2027</th><th>2028</th><th>2029</th><th>2030</th></tr></thead>
+      <tbody></tbody></table></div></div>
   <div class="nx-card" id="est-card" style="margin-bottom: var(--cds-gap-md)"><h3>2030 generation estimate by country</h3><p class="nx-note">Capacity factor is the 2022–24 average; range uses the weakest and strongest of those years. Likely conservative for wind (newer turbines and offshore run higher) and excludes curtailment.</p>
     <div class="nx-tablebox"><table class="nx-table nx-plain" id="est-table" data-source="gen_estimate" data-row-key="country,tech">
       <thead><tr><th data-field="country">Country</th><th data-field="tech">Technology</th><th data-field="capacity_factor">Capacity factor</th><th data-field="gen_2024_twh">2024 (TWh)</th><th data-field="est_2030_twh">2030 est. (TWh)</th><th data-field="low_twh">Range (TWh)</th></tr></thead>
@@ -357,6 +361,31 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
       };
     })
   });
+  dash.calc('gen_annual', {
+    title: 'Generation estimate by year',
+    description: "End-of-year capacity (IRENA for 2025, the yearly projection for 2026-30) times each country's 2022-24 average capacity factor, TWh; low and high use the weakest and strongest of those years.",
+    inputs: ['annual', 'capacity', 'generation'],
+    fn: (annual, capacity, generation) => {
+      const out = [];
+      ['wind', 'solar'].forEach(tech => ['Denmark', 'Finland', 'Norway', 'Sweden'].forEach(country => {
+        const cap = y => { const r = capacity.find(c => c.country === country && Number(c.year) === y); return r ? Number(r[tech + '_mw']) : NaN; };
+        const gen = y => { const r = generation.find(g => g.country === country && Number(g.year) === y); return r ? Number(r[tech + '_gwh']) : NaN; };
+        const cfs = [2022, 2023, 2024].map(y => gen(y) / (((cap(y - 1) + cap(y)) / 2) * 8.76));
+        const cf = cfs.reduce((a, b) => a + b, 0) / cfs.length;
+        const twh = (mw, k) => Math.round(mw * 8.76 * k / 100) / 10;
+        const mwFor = y => {
+          if (y === 2025) return cap(2025);
+          const r = annual.find(a => a.country === country && a.tech === tech && Number(a.year) === y);
+          return r ? Number(r.capacity_mw) : NaN;
+        };
+        [2025, 2026, 2027, 2028, 2029, 2030].forEach(year => {
+          const mw = mwFor(year);
+          out.push({ country, tech, year, est_twh: twh(mw, cf), low_twh: twh(mw, Math.min(...cfs)), high_twh: twh(mw, Math.max(...cfs)) });
+        });
+      }));
+      return out;
+    }
+  });
   dash.calc('gen_estimate_totals', {
     title: 'Nordic 2030 generation estimate',
     description: 'Sum of the four countries\' 2030 generation estimates, TWh.',
@@ -430,6 +459,36 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
 
 <script>
 (function () {
+  const f1 = d3.format(',.1f');
+  dash.onData(() => {
+    const a = dash.data('gen_annual');
+    const tb = document.querySelector('#gen-ann-table tbody');
+    tb.textContent = '';
+    if (a.status !== 'ok') return;
+    const yrs = [2025, 2026, 2027, 2028, 2029, 2030];
+    ['wind', 'solar'].forEach(tech => {
+      const total = {};
+      ['Denmark', 'Finland', 'Norway', 'Sweden'].forEach(country => {
+        const tr = document.createElement('tr');
+        [country, tech].forEach(v => { const td = document.createElement('td'); td.style.textAlign = 'left'; td.textContent = v; tr.appendChild(td); });
+        yrs.forEach(y => {
+          const r = a.data.find(q => q.tech === tech && q.country === country && q.year === y);
+          if (r) total[y] = (total[y] || 0) + r.est_twh;
+          const td = document.createElement('td'); td.textContent = r ? f1(r.est_twh) : '—'; tr.appendChild(td);
+        });
+        tb.appendChild(tr);
+      });
+      const tt = document.createElement('tr'); tt.style.fontWeight = '600';
+      ['Nordics', tech].forEach(v => { const td = document.createElement('td'); td.style.textAlign = 'left'; td.textContent = v; tt.appendChild(td); });
+      yrs.forEach(y => { const td = document.createElement('td'); td.textContent = f1(total[y] || 0); tt.appendChild(td); });
+      tb.appendChild(tt);
+    });
+  });
+})();
+</script>
+
+<script>
+(function () {
   const COUNTRIES = window.nxCountries;
   const nf = d3.format(',');
 
@@ -483,6 +542,7 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
     const meas = svg.append('g').attr('font-size', 12);
     let ml = 0;
     yTicks.forEach(t => { const n = meas.append('text').text(yFmt(t)); ml = Math.max(ml, n.node().getComputedTextLength()); });
+    { const n = meas.append('text').attr('font-size', 11).text(unit); ml = Math.max(ml, n.node().getComputedTextLength()); }
     let mr = 0;
     if (hasFc) {
       order.forEach(c => { const n = meas.append('text').text(c); mr = Math.max(mr, n.node().getComputedTextLength()); });
@@ -491,7 +551,8 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
       const n = meas.append('text').attr('font-weight', 600).text('Total ' + valFmt(endTotal)); mr = Math.max(mr, n.node().getComputedTextLength());
     }
     meas.remove();
-    ml += 8; mr += 10;
+    const whisk = hasProj && proj.range ? 6 : 0;
+    ml += 8; mr += 10 + whisk;
 
     const colW = hasFc ? 22 : 0, colGap = hasFc ? 18 : 0;
     const xEnd = W - mr - colW - colGap;
@@ -533,9 +594,14 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
       g.append('line').attr('x1', dx).attr('x2', dx).attr('y1', mt).attr('y2', H - mb)
         .attr('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '2 3');
       g.append('text').attr('x', dx + 4).attr('y', mt + 2).attr('dy', '0.7em').attr('font-size', 11)
-        .attr('fill', 'var(--color-fg-muted)').text('Forecast');
+        .attr('fill', 'var(--color-fg-muted)').text(proj.divider || 'Forecast');
       g.append('text').attr('x', dx - 4).attr('y', y(totals[totals.length - 1]) - 6).attr('text-anchor', 'end')
         .attr('font-size', 12).attr('font-weight', 600).attr('fill', 'var(--color-fg)').text(valFmt(totals[totals.length - 1]));
+      if (proj.range) {
+        const wx = x(xMax), y1 = y(proj.range[1]), y0 = y(proj.range[0]);
+        g.append('line').attr('x1', wx).attr('x2', wx).attr('y1', y1).attr('y2', y0).attr('stroke', 'var(--color-fg)').attr('stroke-width', 1.25);
+        [y0, y1].forEach(yy => g.append('line').attr('x1', wx - 4).attr('x2', wx + 4).attr('y1', yy).attr('y2', yy).attr('stroke', 'var(--color-fg)').attr('stroke-width', 1.25));
+      }
     }
     g.append('line').attr('x1', ml).attr('x2', hasFc ? colX + colW : xEnd).attr('y1', H - mb).attr('y2', H - mb).attr('stroke', 'var(--cds-chart-axis)');
 
@@ -569,7 +635,7 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
       });
       labs.push({ c: 'Total', v: endTotal, ty: y(endTotal) - 2, total: true });
     }
-    const lx = hasFc ? colX + colW + 6 : x(xMax) + 6;
+    const lx = hasFc ? colX + colW + 6 : x(xMax) + 6 + whisk;
     labs.sort((a, b) => a.ty - b.ty);
     const gap = 14;
     for (let i = 1; i < labs.length; i++) if (labs[i].ty - labs[i - 1].ty < gap) labs[i].ty = labs[i - 1].ty + gap;
@@ -630,6 +696,11 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
         h.textContent = isProj ? yr + ' · ' + (proj.label || 'forecast') : String(yr);
         order.slice().reverse().forEach(c => addRow(c, d[c], colorOf(c)));
         addRow('Total', sumRow(d), null, true);
+        if (isProj && yr === xMax && proj.range) {
+          const r = document.createElement('div'); r.style.color = 'var(--cds-text-secondary)';
+          r.textContent = 'Weather range ' + valFmt(proj.range[0]) + '–' + valFmt(proj.range[1]) + ' ' + unit;
+          tip.appendChild(r);
+        }
         place(cx);
       })
       .on('pointerleave', hide);
@@ -690,16 +761,16 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
     };
     lineChart(document.getElementById('cap-wind'), cap.status, cr, 'wind_mw', 1000, 'GW', null, projFor('wind', 'WindEurope forecast'));
     lineChart(document.getElementById('cap-solar'), cap.status, cr, 'solar_mw', 1000, 'GW', null, projFor('solar', 'straight line to 2030 forecast'));
-    const est = dash.data('gen_estimate'), estT = dash.data('gen_estimate_totals');
-    const estFor = tech => {
-      if (est.status !== 'ok' || estT.status !== 'ok') return null;
-      const values = {};
-      est.data.filter(r => r.tech === tech).forEach(r => { values[r.country] = r.est_2030_twh; });
-      const t = estT.data.find(r => r.tech === tech);
-      return { values, range: t ? [t.low_twh, t.high_twh] : null, label: '2030 estimate (capacity × recent capacity factor)' };
+    const ga = dash.data('gen_annual'), estT = dash.data('gen_estimate_totals');
+    const genProjFor = tech => {
+      if (ga.status !== 'ok') return null;
+      const byYear = {};
+      ga.data.filter(r => r.tech === tech).forEach(r => { (byYear[r.year] = byYear[r.year] || { year: r.year })[r.country] = r.est_twh; });
+      const t = estT.status === 'ok' ? estT.data.find(r => r.tech === tech) : null;
+      return { rows: Object.values(byYear), range: t ? [t.low_twh, t.high_twh] : null, label: 'estimate', divider: 'Estimate' };
     };
-    lineChart(document.getElementById('gen-wind'), gen.status, gr, 'wind_gwh', 1000, 'TWh', estFor('wind'));
-    lineChart(document.getElementById('gen-solar'), gen.status, gr, 'solar_gwh', 1000, 'TWh', estFor('solar'));
+    lineChart(document.getElementById('gen-wind'), gen.status, gr, 'wind_gwh', 1000, 'TWh', null, genProjFor('wind'));
+    lineChart(document.getElementById('gen-solar'), gen.status, gr, 'solar_gwh', 1000, 'TWh', null, genProjFor('solar'));
     capTable(cap.status, cr);
     genTable(gen.status, gr);
   });

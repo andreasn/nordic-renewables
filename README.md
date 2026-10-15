@@ -13,7 +13,7 @@ A one-page dashboard of solar and wind buildout in Denmark, Finland, Norway and 
 | `data/nordic_outlook_2030.csv` | Industry 2030 capacity forecasts (MW) | WindEurope outlook 2026–2030 (Feb 2026); SolarPower Europe 2023 and DNV ETO, as cited by DNV (Feb 2024) |
 | `data/nordic_outlook_annual.csv` | Projected capacity by year, 2026–2030 (MW) | Wind: WindEurope's yearly installations added to IRENA 2025. Solar: straight line from IRENA 2025 to the 2030 forecast |
 
-The 2030 generation estimate is calculated in the page: forecast 2030 capacity × each country's average 2022–24 capacity factor, with a range from the weakest and strongest of those years.
+Generation estimates for 2025–2030 are calculated in the page: each year's end-of-year capacity (IRENA for 2025, the yearly projection after that) × each country's average 2022–24 capacity factor, with a 2030 range from the weakest and strongest of those years.
 
 ## Running locally
 
