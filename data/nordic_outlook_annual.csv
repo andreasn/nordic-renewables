@@ -34,8 +34,8 @@ Sweden,wind,2027,18220.6,WindEurope yearly installations (Feb 2026) added to IRE
 Sweden,wind,2028,18770.6,WindEurope yearly installations (Feb 2026) added to IRENA's 2025 capacity
 Sweden,wind,2029,19340.6,WindEurope yearly installations (Feb 2026) added to IRENA's 2025 capacity
 Sweden,wind,2030,19675.6,WindEurope yearly installations (Feb 2026) added to IRENA's 2025 capacity
-Sweden,solar,2026,5860.0,Straight line from IRENA 2025 to the 2030 industry forecast (no yearly forecast published)
-Sweden,solar,2027,6220.0,Straight line from IRENA 2025 to the 2030 industry forecast (no yearly forecast published)
-Sweden,solar,2028,6580.0,Straight line from IRENA 2025 to the 2030 industry forecast (no yearly forecast published)
-Sweden,solar,2029,6940.0,Straight line from IRENA 2025 to the 2030 industry forecast (no yearly forecast published)
-Sweden,solar,2030,7300.0,Straight line from IRENA 2025 to the 2030 industry forecast (no yearly forecast published)
+Sweden,solar,2026,5740.0,"Straight line from IRENA 2025 to the Swedish Energy Agency's short-term forecast, extended to 2030 and converted to capacity"
+Sweden,solar,2027,5980.0,"Straight line from IRENA 2025 to the Swedish Energy Agency's short-term forecast, extended to 2030 and converted to capacity"
+Sweden,solar,2028,6220.0,"Straight line from IRENA 2025 to the Swedish Energy Agency's short-term forecast, extended to 2030 and converted to capacity"
+Sweden,solar,2029,6460.0,"Straight line from IRENA 2025 to the Swedish Energy Agency's short-term forecast, extended to 2030 and converted to capacity"
+Sweden,solar,2030,6700.0,"Straight line from IRENA 2025 to the Swedish Energy Agency's short-term forecast, extended to 2030 and converted to capacity"
