@@ -83,6 +83,9 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
 #dash-root .nx { font-family: var(--font-anthropic-sans); color: var(--color-fg); }
 #dash-root .nx-head h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0 0 var(--cds-gap-lg); }
 #dash-root .nx-take { color: var(--color-fg-muted); font-size: var(--cds-font-size-body); margin: 0 0 var(--cds-gap-lg); max-width: 60rem; }
+#dash-root .nx-rowlabel { margin: 0 0 var(--cds-gap-sm); font-size: var(--cds-font-size-caption); font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+#dash-root .nx-tiles.nx-tiles-first { margin-bottom: var(--cds-gap-lg); }
+#dash-root #tiles-2030 .nx-card { background: transparent; border-style: dashed; }
 #dash-root .nx-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr)); gap: var(--cds-gap-md); margin-bottom: var(--cds-gap-xl); }
 #dash-root .nx-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; }
 #dash-root .nx-tile-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
@@ -138,7 +141,23 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
     <h1 id="title">Nordic solar &amp; wind</h1>
   </header>
 
-  <div class="nx-tiles" id="tiles"></div>
+  <p class="nx-rowlabel">Today</p>
+  <div class="nx-tiles nx-tiles-first" id="tiles"></div>
+  <p class="nx-rowlabel">2030 estimate</p>
+  <div class="nx-tiles" id="tiles-2030">
+    <div class="nx-card"><div class="nx-tile-label">Nordic wind capacity, 2030</div>
+      <div class="nx-big"><span class="dash-skeleton" data-source="capacity_2030" data-field="cap_2030_gw" data-where="tech=wind">—</span><span class="nx-unit">GW</span></div>
+      <div class="nx-sub">2025: <span data-source="capacity_2030" data-field="cap_2025_gw" data-where="tech=wind"></span> · <span data-source="capacity_2030" data-field="change_gw" data-where="tech=wind"></span> GW</div></div>
+    <div class="nx-card"><div class="nx-tile-label">Nordic solar capacity, 2030</div>
+      <div class="nx-big"><span class="dash-skeleton" data-source="capacity_2030" data-field="cap_2030_gw" data-where="tech=solar">—</span><span class="nx-unit">GW</span></div>
+      <div class="nx-sub">2025: <span data-source="capacity_2030" data-field="cap_2025_gw" data-where="tech=solar"></span> · <span data-source="capacity_2030" data-field="change_gw" data-where="tech=solar"></span> GW</div></div>
+    <div class="nx-card"><div class="nx-tile-label">Nordic wind generation, 2030</div>
+      <div class="nx-big"><span class="dash-skeleton" data-source="gen_estimate_totals" data-field="est_2030_twh" data-where="tech=wind">—</span><span class="nx-unit">TWh</span></div>
+      <div class="nx-sub">range <span data-source="gen_estimate_totals" data-field="low_twh" data-where="tech=wind"></span>–<span data-source="gen_estimate_totals" data-field="high_twh" data-where="tech=wind"></span> · 2024: <span data-source="gen_estimate_totals" data-field="gen_2024_twh" data-where="tech=wind"></span></div></div>
+    <div class="nx-card"><div class="nx-tile-label">Nordic solar generation, 2030</div>
+      <div class="nx-big"><span class="dash-skeleton" data-source="gen_estimate_totals" data-field="est_2030_twh" data-where="tech=solar">—</span><span class="nx-unit">TWh</span></div>
+      <div class="nx-sub">range <span data-source="gen_estimate_totals" data-field="low_twh" data-where="tech=solar"></span>–<span data-source="gen_estimate_totals" data-field="high_twh" data-where="tech=solar"></span> · 2024: <span data-source="gen_estimate_totals" data-field="gen_2024_twh" data-where="tech=solar"></span></div></div>
+  </div>
 
   <h2 class="nx-sec" id="capacity">Installed capacity</h2>
   <p class="nx-secnote">IRENA Renewable Energy Statistics 2026, end-of-year installed capacity, then industry forecasts for 2026–2030 as lighter bands with dashed edges. Wind follows WindEurope's expected installations year by year; solar has no yearly forecast, so it is a straight line to each country's 2030 figure. Charts in GW, table in MW.</p>
@@ -156,14 +175,6 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
 
   <h2 class="nx-sec" id="generation">Electricity generation</h2>
   <p class="nx-secnote">Eurostat gross electricity production, the official series IRENA's European generation figures draw on. Charts in TWh, table in GWh. Actuals run to 2024; the lighter bands from 2025 to 2030 are estimates: each year's end-of-year capacity (IRENA for 2025, the yearly projection after that) times each country's 2022–24 capacity factor. The whisker at 2030 spans the weakest and strongest recent weather year.</p>
-  <div class="nx-tiles">
-    <div class="nx-card"><div class="nx-tile-label">Estimated Nordic wind generation, 2030</div>
-      <div class="nx-big"><span class="dash-skeleton" data-source="gen_estimate_totals" data-field="est_2030_twh" data-where="tech=wind">—</span><span class="nx-unit">TWh</span></div>
-      <div class="nx-sub">range <span data-source="gen_estimate_totals" data-field="low_twh" data-where="tech=wind"></span>–<span data-source="gen_estimate_totals" data-field="high_twh" data-where="tech=wind"></span> · 2024: <span data-source="gen_estimate_totals" data-field="gen_2024_twh" data-where="tech=wind"></span></div></div>
-    <div class="nx-card"><div class="nx-tile-label">Estimated Nordic solar generation, 2030</div>
-      <div class="nx-big"><span class="dash-skeleton" data-source="gen_estimate_totals" data-field="est_2030_twh" data-where="tech=solar">—</span><span class="nx-unit">TWh</span></div>
-      <div class="nx-sub">range <span data-source="gen_estimate_totals" data-field="low_twh" data-where="tech=solar"></span>–<span data-source="gen_estimate_totals" data-field="high_twh" data-where="tech=solar"></span> · 2024: <span data-source="gen_estimate_totals" data-field="gen_2024_twh" data-where="tech=solar"></span></div></div>
-  </div>
   <div class="nx-grid">
     <div class="nx-card"><h3 id="gen-wind-title">Wind generation</h3><p class="nx-note">Stacked by country, TWh per year</p>
       <div class="nx-chart" id="gen-wind" data-source="generation gen_annual gen_estimate_totals"></div></div>
@@ -514,6 +525,32 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
       m.appendChild(a);
       tr2.appendChild(m);
       tb.appendChild(tr2);
+    });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  dash.calc('capacity_2030', {
+    title: 'Nordic capacity 2030',
+    description: "Sum of the four countries' projected 2030 capacity and IRENA 2025 capacity, GW.",
+    inputs: ['annual', 'capacity'],
+    fn: (annual, capacity) => ['wind', 'solar'].map(tech => {
+      const c30 = annual.filter(r => r.tech === tech && Number(r.year) === 2030).reduce((s, r) => s + Number(r.capacity_mw), 0) / 1000;
+      const c25 = capacity.filter(r => Number(r.year) === 2025).reduce((s, r) => s + (Number(r[tech + '_mw']) || 0), 0) / 1000;
+      const r1 = v => Math.round(v * 10) / 10;
+      return { tech, cap_2030_gw: r1(c30), cap_2025_gw: r1(c25), change_gw: r1(c30 - c25) };
+    })
+  });
+  const f1 = d3.format(',.1f'), sf = d3.format('+,.1f');
+  dash.onData(() => {
+    const t = dash.data('capacity_2030');
+    document.querySelectorAll('[data-source="capacity_2030"]').forEach(el => {
+      if (t.status !== 'ok') { if (t.status === 'error') { el.classList.remove('dash-skeleton'); el.textContent = '—'; } return; }
+      el.classList.remove('dash-skeleton');
+      const r = t.data.find(q => q.tech === new URLSearchParams(el.dataset.where).get('tech'));
+      el.textContent = r ? (el.dataset.field === 'change_gw' ? sf(r.change_gw) : f1(r[el.dataset.field])) : '—';
     });
   });
 })();
