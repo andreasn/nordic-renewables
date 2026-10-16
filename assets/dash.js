@@ -6,7 +6,9 @@
     capacity: 'data/nordic_capacity_irena.csv',
     generation: 'data/nordic_generation_eurostat.csv',
     forecast: 'data/nordic_outlook_2030.csv',
-    annual: 'data/nordic_outlook_annual.csv'
+    annual: 'data/nordic_outlook_annual.csv',
+    batteries_reserves: 'data/nordic_batteries_reserves_2025.csv',
+    batteries_latest: 'data/nordic_batteries_latest.csv'
   };
 
   const store = {};      // id -> {status, data, columns, message}

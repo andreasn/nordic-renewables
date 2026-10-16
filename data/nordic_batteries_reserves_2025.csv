@@ -1,0 +1,41 @@
+country,product,direction,market,prequalified_mw
+Denmark,FFR,Up,Capacity,10
+Finland,FFR,Up,Capacity,102
+Norway,FFR,Up,Capacity,8.1
+Sweden,FFR,Up,Capacity,297.2
+Denmark,FCR-D,Up,Capacity,18.1
+Finland,FCR-D,Up,Capacity,119
+Norway,FCR-D,Up,Capacity,1
+Sweden,FCR-D,Up,Capacity,608.3
+Denmark,FCR-D,Down,Capacity,18.1
+Finland,FCR-D,Down,Capacity,116
+Norway,FCR-D,Down,Capacity,0
+Sweden,FCR-D,Down,Capacity,568
+Denmark,FCR-N,Symmetric,Capacity,8
+Finland,FCR-N,Symmetric,Capacity,106
+Norway,FCR-N,Symmetric,Capacity,0.4
+Sweden,FCR-N,Symmetric,Capacity,297.2
+Denmark,aFRR,Up,Capacity,5.3
+Finland,aFRR,Up,Capacity,40
+Norway,aFRR,Up,Capacity,0
+Sweden,aFRR,Up,Capacity,0
+Denmark,aFRR,Down,Capacity,5.3
+Finland,aFRR,Down,Capacity,40
+Norway,aFRR,Down,Capacity,0
+Sweden,aFRR,Down,Capacity,0
+Denmark,mFRR,Up,Capacity,0
+Finland,mFRR,Up,Capacity,
+Norway,mFRR,Up,Capacity,0
+Sweden,mFRR,Up,Capacity,3
+Denmark,mFRR,Up,Energy activation,0
+Finland,mFRR,Up,Energy activation,
+Norway,mFRR,Up,Energy activation,0
+Sweden,mFRR,Up,Energy activation,117.5
+Denmark,mFRR,Down,Capacity,0
+Finland,mFRR,Down,Capacity,
+Norway,mFRR,Down,Capacity,0
+Sweden,mFRR,Down,Capacity,4
+Denmark,mFRR,Down,Energy activation,0
+Finland,mFRR,Down,Energy activation,
+Norway,mFRR,Down,Energy activation,0
+Sweden,mFRR,Down,Energy activation,118.5

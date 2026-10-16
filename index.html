@@ -120,6 +120,9 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
 #dash-root details.nx-collapse > summary:focus-visible { outline: 2px solid var(--series-1); outline-offset: 4px; border-radius: 4px; }
 #dash-root .nx-toggle-hint { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
 #dash-root details.nx-collapse > .nx-note { margin-top: var(--cds-gap-sm); }
+#dash-root .nx-table tr.nx-bat-main td { border-bottom: 0; padding-top: var(--cds-pad-sm); font-size: var(--cds-font-size-body); }
+#dash-root .nx-table tr.nx-bat-note td { text-align: left; color: var(--color-fg-muted); padding-top: 0; padding-bottom: var(--cds-pad-sm); line-height: 1.45; }
+#dash-root #bat-latest + * , #dash-root .nx-card:has(#bat-latest) .nx-tablebox { max-height: none; }
 #dash-root .nx-table tr.nx-proj td { color: var(--color-fg-muted); font-style: italic; }
 #dash-root .nx-table td.nx-l { min-width: 14rem; color: var(--color-fg-muted); }
 #dash-root .nx-src { margin-top: var(--cds-gap-xl); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); max-width: 60rem; }
@@ -181,9 +184,21 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
       <thead><tr><th data-field="country"><button>Country</button></th><th data-field="year"><button>Year</button></th><th data-field="solar_gwh"><button>Solar (GWh)</button></th><th data-field="wind_gwh"><button>Wind (GWh)</button></th></tr></thead>
       <tbody></tbody></table></div></details>
 
+  <h2 class="nx-sec" id="batteries">Battery storage</h2>
+  <p class="nx-secnote">Grid-scale batteries in the Nordics earn most of their money selling frequency reserves, so the grid operators' reserve-market records are the most complete count. There is no common statistic like IRENA's for wind and solar: the chart is the one like-for-like snapshot across all four countries, and the table gives each country's newest figure, which are measured differently.</p>
+  <div class="nx-grid">
+    <div class="nx-card"><h3 id="bat-res-title">Batteries qualified for reserve markets</h3><p class="nx-note">MW prequalified by product, 1 January 2025 · one battery can qualify for several products, so the bars are not additive</p>
+      <div class="nx-chart" id="bat-res" data-source="batteries_reserves"></div></div>
+    <div class="nx-card"><h3 id="bat-latest-title">Newest figure by country</h3><p class="nx-note">MW · each country publishes something different, so compare with care</p>
+      <div class="nx-tablebox"><table class="nx-table nx-plain" id="bat-latest" data-source="batteries_latest" data-row-key="country">
+        <thead><tr><th data-field="country">Country</th><th data-field="value_mw">MW</th><th data-field="as_of">As of</th></tr></thead>
+        <tbody></tbody></table></div></div>
+  </div>
+
   <div class="nx-src" id="about">
     <p><b>Capacity:</b> IRENA, Renewable Energy Statistics 2026 (published July 2026), via Our World in Data's copy of the series; wind is onshore plus offshore, solar is total solar. Norway's solar series starts later than the others.</p>
     <p><b>2026–2030 outlook:</b> wind from WindEurope, Wind energy in Europe: 2025 statistics and the outlook for 2026-2030 (February 2026). Its expected yearly onshore and offshore installations are added to IRENA's 2025 capacity, capped at WindEurope's stated 2030 totals where retirements make the yearly sum overshoot; WindEurope's own count starts about 1 GW higher for the Nordics, mostly in Sweden. Solar from DNV's February 2024 article on Nordic solar, which cites SolarPower Europe's 2023 outlook for Denmark, Sweden and Finland and DNV's own Energy Transition Outlook for Norway. Finland's solar figure is approximate: the source says capacity will almost triple from about 1 GW.</p>
+    <p><b>Battery storage:</b> reserve-market snapshot from the Nordic grid operators' joint report <a href="https://www.statnett.no/globalassets/for-aktorer-i-kraftsystemet/marked/reservemarkeder/nordic-tsos---batteries-in-the-nordic-reserve-markets-april-2025.pdf">Batteries in the Nordic reserve markets</a> (April 2025). Newest figures: <a href="https://www.svk.se/aktorsportalen/bidra-med-reserver/behov-av-reserver-nu-och-i-framtiden/utbud-pa-marknaderna-for-reserver/">Svenska kraftnät</a> (its "energy storage" category, July 2026), <a href="https://www.fingrid.fi/en/news/news/2026/the-combined-capacity-of-electricity-storages-in-finland-now-exceeds-1000-mw/">Fingrid</a> (February 2026), the Danish Energy Agency via <a href="https://www.energiforumdanmark.dk/nyheder/21-08-2026-batterier-vinder-frem-baade-paa-bygninger-og-i-stor-skala/">Dansk Solcelleforening</a> (August 2026) and a report for Norway's regulator RME via <a href="https://www.ess-news.com/2026/09/03/regulatory-hurdles-persist-in-norways-battery-market/">ESS News</a> (September 2026).</p>
     <p><b>Generation:</b> IRENA's generation table is only available through its query database, so this uses Eurostat's gross electricity production (dataset nrg_bal_peh, wind and solar PV), the official statistics IRENA's European figures draw on. Sweden's values match IRENA's country profile exactly; Denmark's recent solar output is higher in Eurostat's current release than in IRENA's profile, most likely from later revisions, so small gaps against IRENA are possible.</p>
   </div>
 </div>
@@ -193,7 +208,9 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
   Data files: <a href="data/nordic_capacity_irena.csv">capacity (IRENA)</a> ·
   <a href="data/nordic_generation_eurostat.csv">generation (Eurostat)</a> ·
   <a href="data/nordic_outlook_2030.csv">2030 outlook</a> ·
-  <a href="data/nordic_outlook_annual.csv">2026–2030 projections</a>.
+  <a href="data/nordic_outlook_annual.csv">2026–2030 projections</a> ·
+  <a href="data/nordic_batteries_reserves_2025.csv">batteries in reserve markets</a> ·
+  <a href="data/nordic_batteries_latest.csv">battery newest figures</a>.
   Sources: <a href="https://www.irena.org/Publications/2026/Jul/Renewable-energy-statistics-2026">IRENA Renewable Energy Statistics 2026</a>,
   <a href="https://ec.europa.eu/eurostat/databrowser/view/nrg_bal_peh/default/table">Eurostat nrg_bal_peh</a>,
   <a href="https://windeurope.org/data/product/wind-energy-in-europe-2025-statistics-and-the-outlook-for-2026-2030">WindEurope outlook 2026–2030</a>,
@@ -386,6 +403,118 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
     const hint = d.querySelector('.nx-toggle-hint');
     const sync = () => { hint.textContent = d.open ? 'Hide table' : 'Show table'; };
     d.addEventListener('toggle', sync); sync();
+  });
+})();
+</script>
+
+<script>
+(function () {
+  const COUNTRIES = window.nxCountries;
+  const PRODUCTS = [
+    { key: 'FCR-D|Up', label: 'FCR-D up' },
+    { key: 'FFR|Up', label: 'FFR' },
+    { key: 'FCR-N|Symmetric', label: 'FCR-N' },
+    { key: 'aFRR|Up', label: 'aFRR up' },
+    { key: 'mFRR|Up', label: 'mFRR up' }
+  ];
+  const nf = d3.format(',.0f');
+
+  function drawReserves(box, st, rows) {
+    box.innerHTML = '';
+    if (st === 'error') { const f = document.createElement('div'); f.className = 'nx-fail'; f.textContent = 'Failed to load'; box.appendChild(f); return; }
+    if (st !== 'ok') { box.classList.add('dash-skeleton'); return; }
+    box.classList.remove('dash-skeleton');
+    const val = (c, pk) => {
+      const [p, d] = pk.split('|');
+      // mFRR: sum isn't meaningful across markets, take the larger of capacity and activation markets
+      const hits = rows.filter(r => r.country === c && r.product === p && r.direction === d && r.prequalified_mw !== '');
+      return hits.length ? d3.max(hits, r => Number(r.prequalified_mw)) : null;
+    };
+    const W = Math.max(280, box.clientWidth || 600), narrow = W < 420, mt = 26, ml0 = 8;
+    const legendRows = narrow ? 2 : 1, mb = 30 + legendRows * 18, H = 262 + legendRows * 18;
+    const vmax = d3.max(PRODUCTS, p => d3.max(COUNTRIES, c => val(c, p.key) || 0)) || 1;
+    const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img');
+    const y = d3.scaleLinear([0, vmax * 1.12], [H - mb, mt]).nice();
+    const yt = y.ticks(5);
+    const meas = svg.append('g').attr('font-size', 12);
+    let ml = 0; yt.forEach(t => { ml = Math.max(ml, meas.append('text').text(nf(t)).node().getComputedTextLength()); });
+    ml = Math.max(ml, meas.append('text').attr('font-size', 11).text('MW').node().getComputedTextLength());
+    meas.remove(); ml += ml0 + 6;
+    const x0 = d3.scaleBand(PRODUCTS.map(p => p.key), [ml, W - 4]).paddingInner(0.22).paddingOuter(0.08);
+    const x1 = d3.scaleBand(COUNTRIES, [0, x0.bandwidth()]).padding(0.12);
+    const g = svg.append('g');
+    g.selectAll('line.g').data(yt).join('line').attr('x1', ml).attr('x2', W - 4).attr('y1', d => y(d)).attr('y2', d => y(d)).attr('stroke', 'var(--cds-chart-grid)');
+    g.selectAll('text.y').data(yt).join('text').attr('x', ml - 6).attr('y', d => y(d)).attr('dy', '0.32em').attr('text-anchor', 'end').attr('font-size', 12).attr('fill', 'var(--color-fg-muted)').text(d => nf(d));
+    g.append('text').attr('x', ml - 6).attr('y', mt - 14).attr('text-anchor', 'end').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text('MW');
+    g.append('line').attr('x1', ml).attr('x2', W - 4).attr('y1', H - mb).attr('y2', H - mb).attr('stroke', 'var(--cds-chart-axis)');
+    PRODUCTS.forEach(p => {
+      g.append('text').attr('x', x0(p.key) + x0.bandwidth() / 2).attr('y', H - mb + 16).attr('text-anchor', 'middle').attr('font-size', narrow ? 11 : 12).attr('fill', 'var(--color-fg-muted)').text(narrow ? p.label.replace(' up', '↑') : p.label);
+      COUNTRIES.forEach((c, i) => {
+        const v = val(c, p.key);
+        if (v == null) return;
+        const bx = x0(p.key) + x1(c), bw = x1.bandwidth(), h = Math.max(v > 0 ? 1.5 : 0, y(0) - y(v));
+        g.append('rect').attr('x', bx).attr('width', bw).attr('y', y(0) - h).attr('height', h).attr('rx', Math.min(3, bw / 2)).attr('fill', dash.colors[i])
+          .append('title').text(c + ', ' + p.label + ': ' + d3.format(',.1f')(v) + ' MW');
+      });
+    });
+    // legend under the axis
+    const lg = svg.append('g').attr('font-size', 12);
+    let lx = ml, ly = H - 16 - (legendRows - 1) * 18;
+    COUNTRIES.forEach((c, i) => {
+      if (narrow && i === 2) { lx = ml; ly += 18; }
+      lg.append('rect').attr('x', lx).attr('y', ly).attr('width', 9).attr('height', 9).attr('rx', 2).attr('fill', dash.colors[i]);
+      const t = lg.append('text').attr('x', lx + 13).attr('y', ly + 8).attr('fill', 'var(--color-fg-muted)').text(c);
+      lx += 13 + t.node().getComputedTextLength() + 14;
+    });
+    // tooltip
+    const tip = document.createElement('div'); tip.className = 'nx-tip'; box.appendChild(tip);
+    svg.append('rect').attr('x', ml).attr('y', mt).attr('width', W - 4 - ml).attr('height', H - mb - mt).attr('fill', 'transparent')
+      .on('pointermove', ev => {
+        const [px] = d3.pointer(ev);
+        const p = PRODUCTS.find(q => px >= x0(q.key) - x0.step() * x0.paddingInner() / 2 && px <= x0(q.key) + x0.bandwidth() + x0.step() * x0.paddingInner() / 2);
+        if (!p) { tip.style.display = 'none'; return; }
+        tip.textContent = '';
+        const h = document.createElement('div'); h.className = 'nx-tip-h'; h.textContent = p.label + ' · 1 Jan 2025'; tip.appendChild(h);
+        COUNTRIES.forEach((c, i) => {
+          const v = val(c, p.key);
+          const r = document.createElement('div');
+          const sw = document.createElement('span'); sw.className = 'nx-sw'; sw.style.background = dash.colors[i]; r.appendChild(sw);
+          r.appendChild(document.createTextNode(c));
+          const s = document.createElement('span'); s.className = 'nx-tv'; s.textContent = v == null ? 'n/a' : d3.format(',.1f')(v) + ' MW'; r.appendChild(s);
+          tip.appendChild(r);
+        });
+        tip.style.display = 'block';
+        const scale = box.clientWidth / W, cx = (x0(p.key) + x0.bandwidth()) * scale + 8;
+        tip.style.left = Math.max(0, Math.min(cx, box.clientWidth - tip.offsetWidth)) + 'px';
+        tip.style.top = '8px';
+      })
+      .on('pointerleave', () => { tip.style.display = 'none'; });
+  }
+
+  const fd = d3.utcFormat('%b %Y');
+  dash.onData(() => {
+    const r = dash.data('batteries_reserves');
+    drawReserves(document.getElementById('bat-res'), r.status, r.data);
+    const l = dash.data('batteries_latest');
+    const tb = document.querySelector('#bat-latest tbody');
+    tb.textContent = '';
+    if (l.status !== 'ok') return;
+    l.data.slice().sort((a, b) => Number(b.value_mw) - Number(a.value_mw)).forEach(row => {
+      const tr = document.createElement('tr');
+      const td = (txt, left, cls) => { const e = document.createElement('td'); if (left) e.style.textAlign = 'left'; if (cls) e.className = cls; e.textContent = txt; tr.appendChild(e); return e; };
+      td(row.country, true);
+      td(d3.format(',.0f')(Number(row.value_mw)));
+      const d = td(fd(new Date(row.as_of))); d.style.whiteSpace = 'nowrap';
+      tr.className = 'nx-bat-main';
+      tb.appendChild(tr);
+      const tr2 = document.createElement('tr'); tr2.className = 'nx-bat-note';
+      const m = document.createElement('td'); m.colSpan = 3;
+      m.appendChild(document.createTextNode(row.measure + '. '));
+      const a = document.createElement('a'); a.href = row.url; a.textContent = row.source; a.rel = 'noopener'; a.style.color = 'inherit';
+      m.appendChild(a);
+      tr2.appendChild(m);
+      tb.appendChild(tr2);
+    });
   });
 })();
 </script>
