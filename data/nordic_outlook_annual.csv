@@ -24,11 +24,11 @@ Norway,wind,2027,5158.0,WindEurope yearly installations (Feb 2026) added to IREN
 Norway,wind,2028,5318.0,WindEurope yearly installations (Feb 2026) added to IRENA's 2025 capacity
 Norway,wind,2029,5498.0,WindEurope yearly installations (Feb 2026) added to IRENA's 2025 capacity
 Norway,wind,2030,6015.0,WindEurope yearly installations (Feb 2026) added to IRENA's 2025 capacity
-Norway,solar,2026,1322.3,Straight line from IRENA 2025 to the 2030 industry forecast (no yearly forecast published)
-Norway,solar,2027,1741.7,Straight line from IRENA 2025 to the 2030 industry forecast (no yearly forecast published)
-Norway,solar,2028,2161.2,Straight line from IRENA 2025 to the 2030 industry forecast (no yearly forecast published)
-Norway,solar,2029,2580.6,Straight line from IRENA 2025 to the 2030 industry forecast (no yearly forecast published)
-Norway,solar,2030,3000.0,Straight line from IRENA 2025 to the 2030 industry forecast (no yearly forecast published)
+Norway,solar,2026,1202.3,"Straight line from IRENA 2025 to NVE's 2030 projection (1.7 TWh, converted to capacity)"
+Norway,solar,2027,1501.7,"Straight line from IRENA 2025 to NVE's 2030 projection (1.7 TWh, converted to capacity)"
+Norway,solar,2028,1801.2,"Straight line from IRENA 2025 to NVE's 2030 projection (1.7 TWh, converted to capacity)"
+Norway,solar,2029,2100.6,"Straight line from IRENA 2025 to NVE's 2030 projection (1.7 TWh, converted to capacity)"
+Norway,solar,2030,2400.0,"Straight line from IRENA 2025 to NVE's 2030 projection (1.7 TWh, converted to capacity)"
 Sweden,wind,2026,17820.6,WindEurope yearly installations (Feb 2026) added to IRENA's 2025 capacity
 Sweden,wind,2027,18220.6,WindEurope yearly installations (Feb 2026) added to IRENA's 2025 capacity
 Sweden,wind,2028,18770.6,WindEurope yearly installations (Feb 2026) added to IRENA's 2025 capacity

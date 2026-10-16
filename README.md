@@ -10,7 +10,7 @@ A one-page dashboard of solar and wind buildout in Denmark, Finland, Norway and 
 |---|---|---|
 | `data/nordic_capacity_irena.csv` | Installed solar and wind capacity (MW), 2000–2025 | IRENA Renewable Energy Statistics 2026, via Our World in Data |
 | `data/nordic_generation_eurostat.csv` | Solar and wind gross electricity production (GWh), 2000–2024 | Eurostat `nrg_bal_peh` |
-| `data/nordic_outlook_2030.csv` | Industry 2030 capacity forecasts (MW) | WindEurope outlook 2026–2030 (Feb 2026); Danish Energy Agency KF26 (May 2026) for Danish solar; SolarPower Europe 2023 and DNV ETO, as cited by DNV (Feb 2024), for other solar |
+| `data/nordic_outlook_2030.csv` | Industry 2030 capacity forecasts (MW) | WindEurope outlook 2026–2030 (Feb 2026); Danish Energy Agency KF26 (May 2026) for Danish solar; NVE (May 2026) for Norwegian solar; SolarPower Europe 2023, as cited by DNV (Feb 2024), for Swedish and Finnish solar |
 | `data/nordic_outlook_annual.csv` | Projected capacity by year, 2026–2030 (MW) | Wind: WindEurope's yearly installations added to IRENA 2025. Solar: straight line from IRENA 2025 to the 2030 forecast |
 | `data/nordic_batteries_reserves_2025.csv` | Battery MW prequalified for each reserve product, 1 Jan 2025 | Nordic TSOs, *Batteries in the Nordic reserve markets* (Apr 2025) |
 | `data/nordic_batteries_latest.csv` | Newest battery figure per country, with what it measures | Svenska kraftnät, Fingrid, Danish Energy Agency (via Dansk Solcelleforening), report for RME (via ESS News) |
